@@ -105,7 +105,7 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">= 4.9",
-  NeededOtherPackages := [ ],
+  NeededOtherPackages := [ ["BacktrackKit", ">= 0.1",], ["digraphs", ">= 0.2.2"], ["OrbitalGraphs", ">= 0.1"] ],
   SuggestedOtherPackages := [ ],
   ExternalConditions := [ ],
 ),
