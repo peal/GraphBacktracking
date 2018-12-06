@@ -4,3 +4,4 @@
 # Reading the implementation part of the package.
 #
 ReadPackage( "GraphBacktracking", "gap/GraphBacktracking.gi");
+ReadPackage( "GraphBacktracking", "gap/Equitable.gi");

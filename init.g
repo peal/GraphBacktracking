@@ -5,3 +5,4 @@
 #
 
 ReadPackage( "GraphBacktracking", "gap/GraphBacktracking.gd");
+ReadPackage( "GraphBacktracking", "gap/Equitable.gd");
