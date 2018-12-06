@@ -56,17 +56,6 @@ Persons := [
     Institution := "University of Halle-Wittenberg",
   ),
   rec(
-    IsAuthor := false,
-    IsMaintainer := false,
-    FirstNames := "",
-    LastName := "",
-    #WWWHome := TODO,
-    #Email := TODO,
-    #PostalAddress := TODO,
-    #Place := TODO,
-    #Institution := TODO,
-  ),
-  rec(
     IsAuthor := true,
     IsMaintainer := false,
     FirstNames := "Mun See",
