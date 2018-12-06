@@ -1,19 +1,12 @@
-#
-# GraphBacktracking: Super Secret Awesome Searching
-#
-#! @Chapter Introduction
-#!
-#! GraphBacktracking is a package which does some
-#! interesting and cool things
-#!
-#! @Chapter Functionality
-#!
-#!
-#! @Section Example Methods
-#!
-#! This section will describe the example
-#! methods of GraphBacktracking
+
+DeclareGlobalFunction( "GB_BuildRBase" );
+
+DeclareGlobalFunction( "GB_Backtrack" );
+
+DeclareGlobalFunction( "GB_SimpleSearch" );
+
 
 #! @Description
-#!   Insert documentation for your function here
-DeclareGlobalFunction( "GraphBacktracking_Example" );
+#!  Information about backtrack search
+DeclareInfoClass( "InfoGB" );
+SetInfoLevel(InfoGB, 0);

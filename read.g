@@ -5,3 +5,4 @@
 #
 ReadPackage( "GraphBacktracking", "gap/GraphBacktracking.gi");
 ReadPackage( "GraphBacktracking", "gap/Equitable.gi");
+ReadPackage( "GraphBacktracking", "gap/constraints/simpleconstraints.g");
