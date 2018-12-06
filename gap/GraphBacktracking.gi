@@ -49,6 +49,7 @@ InitaliseConstraints := function(state)
             fi;
         fi;
     od;
+    GB_MakeEquitableStrong(state.ps, tracer, state.graphs);
     return true;
 end;
 
