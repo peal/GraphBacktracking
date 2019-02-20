@@ -4,14 +4,14 @@
 # Implementations
 #
 
-GB_Stats := rec( nodes := 0 );
+GB_Stats := fail;
+GB_ResetStats := function()
+    GB_Stats := rec( nodes := 0 );
+end;
+GB_ResetStats();
 
 GB_Stats_AddNode := function()
     GB_Stats.nodes := GB_Stats.nodes + 1;
-end;
-
-GB_ResetStats := function()
-    GB_Stats := rec( nodes := 0 );
 end;
 
 GB_SaveState := function(state)
