@@ -31,6 +31,7 @@ cd pkg
 
 rm -rf datastructures*
 git clone https://github.com/gap-packages/datastructures
+git clone https://github.com/gap-packages/OrbitalGraphs
 git clone https://github.com/ChrisJefferson/BacktrackKit
 
 for pkg in ${GAP_PKGS_TO_BUILD-io profiling}; do
