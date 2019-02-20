@@ -4,6 +4,15 @@
 # Implementations
 #
 
+GB_Stats := rec( nodes := 0 );
+
+GB_Stats_AddNode := function()
+    GB_Stats.nodes := GB_Stats.nodes + 1;
+end;
+
+GB_ResetStats := function()
+    GB_Stats := rec( nodes := 0 );
+end;
 
 SaveState := function(state)
     return rec(depth := PS_Cells(state.ps),
@@ -129,6 +138,8 @@ end;
 InstallGlobalFunction( GB_Backtrack,
     function(state, rbase, depth, perms)
     local p, isSol, savedState, vals, branchInfo, v, tracer;
+
+    GB_Stats_AddNode();
 
     Info(InfoGB, 2, "Partition: ", PS_AsPartition(state.ps));
     if depth > Length(rbase.branches) then
