@@ -29,10 +29,10 @@ function( x ) ... end
 gap> PS_SplitCellsByFunction(ps, r, f);;
 gap> GB_MakeEquitableWeak(ps, r, g);
 gap> PS_AsPartition(ps);
-[ [ 3 ], [ 6 ], [ 2, 4 ], [ 1, 5 ] ]
+[ [ 3 ], [ 1, 5 ], [ 6 ], [ 2, 4 ] ]
 gap> GB_MakeEquitableStrong(ps, r, g);
 gap> PS_AsPartition(ps);
-[ [ 3 ], [ 6 ], [ 2, 4 ], [ 1, 5 ] ]
+[ [ 3 ], [ 1, 5 ], [ 6 ], [ 2, 4 ] ]
 
 #
 gap> ps := PartitionStack(6);
