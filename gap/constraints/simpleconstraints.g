@@ -13,7 +13,7 @@ GB_Con.TupleStab := function(n, fixpoints)
         name := "TupleStab",
         check := {p} -> OnTuples(fixpoints, p) = fixpoints,
         refine := rec(
-            initalise := function(state)
+            initialise := function(state)
                 return filters;
             end)
         );
@@ -29,7 +29,7 @@ GB_Con.SetStab := function(n, fixedset)
         name := "SetStab",
         check := {p} -> OnSets(fixedset, p) = fixedset,
         refine := rec(
-            initalise := function(state)
+            initialise := function(state)
                 return filters;
             end)
         );
@@ -75,7 +75,7 @@ GB_Con.InGroup := function(n, group)
         name := "InGroup",
         check := {p} -> p in group,
         refine := rec(
-            initalise := function(state)
+            initialise := function(state)
                 local fixedpoints, mapval, points, graphs;
                 fixedpoints := PS_FixedPoints(state.ps);
                 points := fillOrbits(fixedpoints);

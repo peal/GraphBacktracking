@@ -47,12 +47,12 @@ GB_ApplyFilters := function(state, tracer, filters)
     return true;
 end;
 
-InitaliseConstraints := function(state)
+InitialiseConstraints := function(state)
     local c, filters, tracer;
     tracer := RecordingTracer();
     for c in state.conlist do
-        if IsBound(c.refine.initalise) then
-            filters := c.refine.initalise(state);
+        if IsBound(c.refine.initialise) then
+            filters := c.refine.initialise(state);
             if not GB_ApplyFilters(state, tracer, filters) then
                 return false;
             fi;
@@ -174,7 +174,7 @@ InstallGlobalFunction( GB_SimpleSearch,
     function(ps, conlist)
         local rbase, perms, state;
         state := rec(ps := ps, graphs := [], conlist := conlist);
-        if not InitaliseConstraints(state) then
+        if not InitialiseConstraints(state) then
             return fail;
         fi;
         perms := [];
