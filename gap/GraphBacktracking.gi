@@ -14,13 +14,13 @@ GB_ResetStats := function()
     GB_Stats := rec( nodes := 0 );
 end;
 
-SaveState := function(state)
+GB_SaveState := function(state)
     return rec(depth := PS_Cells(state.ps),
                conState := BTKit_SaveConstraintState(state.conlist),
                graphs := ShallowCopy(state.graphs));
 end;
 
-RestoreState := function(state, saved)
+GB_RestoreState := function(state, saved)
     PS_RevertToCellCount(state.ps, saved.depth);
     BTKit_RestoreConstraintState(state.conlist, saved.conState);
     state.graphs := ShallowCopy(saved.graphs);
@@ -91,7 +91,7 @@ InstallGlobalFunction( GB_BuildRBase,
         # Make a copy we can keep
         state := StructuralCopy(state);
 
-        savedState := SaveState(state);
+        savedState := GB_SaveState(state);
 
         while PS_Cells(state.ps) <> PS_Points(state.ps) do
             branchCell := branchselector(state.ps);
@@ -108,7 +108,7 @@ InstallGlobalFunction( GB_BuildRBase,
         rbase.graphs := Immutable(state.graphs);
         rbase.depth := Length(rbase.branches);
 
-        RestoreState(state, savedState);
+        GB_RestoreState(state, savedState);
         return rbase;
     end);
 
@@ -156,7 +156,7 @@ InstallGlobalFunction( GB_Backtrack,
         Print("\>");
         for v in vals do
             Info(InfoGB, 2, "Searching: ", v);
-            savedState := SaveState(state);
+            savedState := GB_SaveState(state);
 
             tracer := FollowingTracer(rbase.branches[depth].tracer);
             if PS_SplitCellByFunction(state.ps, tracer, branchInfo.cell, {x} -> x = v) and
@@ -164,7 +164,7 @@ InstallGlobalFunction( GB_Backtrack,
                     GB_Backtrack(state, rbase, depth+1, perms);
             fi;
 
-            RestoreState(state, savedState);
+            GB_RestoreState(state, savedState);
         od;
         Print("\<");
     fi;    
