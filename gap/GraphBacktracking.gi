@@ -83,7 +83,7 @@ end;
 
 InstallGlobalFunction( GB_BuildRBase,
     function(state, branchselector)
-        local ps_depth, rbase, tracelist, tracer, branchinfo, savedState, branchCell, branchPos;
+        local ps_depth, rbase, tracelist, tracer, branchinfo, saved, branchCell, branchPos;
         Info(InfoGB, 1, "Building RBase");
         rbase := rec(branches := []);
         ps_depth := PS_Cells(state.ps);
@@ -91,7 +91,7 @@ InstallGlobalFunction( GB_BuildRBase,
         # Make a copy we can keep
         state := StructuralCopy(state);
 
-        savedState := GB_SaveState(state);
+        saved := GB_SaveState(state);
 
         while PS_Cells(state.ps) <> PS_Points(state.ps) do
             branchCell := branchselector(state.ps);
@@ -108,7 +108,7 @@ InstallGlobalFunction( GB_BuildRBase,
         rbase.graphs := Immutable(state.graphs);
         rbase.depth := Length(rbase.branches);
 
-        GB_RestoreState(state, savedState);
+        GB_RestoreState(state, saved);
         return rbase;
     end);
 
@@ -136,49 +136,65 @@ GB_CheckSolution := function(perm, conlist)
 end;
 
 InstallGlobalFunction( GB_Backtrack,
-    function(state, rbase, depth, perms)
-    local p, isSol, savedState, vals, branchInfo, v, tracer;
-
-    GB_Stats_AddNode();
+    function(state, rbase, depth, perms, parent_special)
+    local p, isSol, branchInfo, vals, special, tracer, found, saved, v;
 
     Info(InfoGB, 2, "Partition: ", PS_AsPartition(state.ps));
+    GB_Stats_AddNode();
+
     if depth > Length(rbase.branches) then
+        if not PS_Fixed(state.ps) then
+            return false;
+        fi;
         p := GB_GetCandidateSolution(state.ps, rbase);
         isSol := GB_CheckSolution(p, state.conlist);
-        Info(InfoGB, 2, "Maybe solution?",p,":",isSol);
+        Info(InfoGB, 2, "Maybe solution? ", p, " : ", isSol);
         if isSol then
-            Add(perms, p);
+            perms[1] := ClosureGroup(perms[1], p);
+            Add(perms[2], p);
         fi;
-    else
-        branchInfo := rbase.branches[depth];
-        vals := Set(PS_CellSlice(state.ps, branchInfo.cell));
-        Info(InfoGB, 1, "Branching: ", depth, ":", branchInfo);
-        Print("\>");
-        for v in vals do
-            Info(InfoGB, 2, "Searching: ", v);
-            savedState := GB_SaveState(state);
+        return isSol;
+    fi;
 
-            tracer := FollowingTracer(rbase.branches[depth].tracer);
-            if PS_SplitCellByFunction(state.ps, tracer, branchInfo.cell, {x} -> x = v) and
-               GB_RefineConstraints(state, tracer, rbase.ps) then
-                    GB_Backtrack(state, rbase, depth+1, perms);
-            fi;
+    branchInfo := rbase.branches[depth];
+    vals := Set(PS_CellSlice(state.ps, branchInfo.cell));
+    Info(InfoGB, 1,
+         StringFormatted("Branching at depth {}: {}", depth, branchInfo));
 
-            GB_RestoreState(state, savedState);
-        od;
-        Print("\<");
-    fi;    
+    special := parent_special;
+    Info(InfoGB, 2, StringFormatted(
+         "Searching: {}; parent_special: {}", vals, parent_special));
+
+    for v in vals do
+        Info(InfoGB, 2, StringFormatted("Branch: {}", v));
+        tracer := FollowingTracer(rbase.branches[depth].tracer);
+        found := false;
+        saved := GB_SaveState(state);
+        if PS_SplitCellByFunction(state.ps, tracer, branchInfo.cell, {x} -> x = v)
+           and GB_RefineConstraints(state, tracer, rbase.ps)
+           and GB_Backtrack(state, rbase, depth + 1, perms, special)
+           then
+            found := true;
+        fi;
+        GB_RestoreState(state, saved);
+
+        if found and not parent_special then
+            return true;
+        fi;
+        special := false;
+    od;
+    return false;
 end);
 
 InstallGlobalFunction( GB_SimpleSearch,
     function(ps, conlist)
         local rbase, perms, state;
-        state := rec(ps := ps, graphs := [], conlist := conlist);
+        state := rec(ps := ps, conlist := conlist, graphs := []);
         if not InitialiseConstraints(state) then
             return fail;
         fi;
-        perms := [];
         rbase := GB_BuildRBase(state, BranchSelector_MinSizeCell);
-        GB_Backtrack(state, rbase, 1, perms);
-        return perms;
+        perms := [ Group(()), [] ];
+        GB_Backtrack(state, rbase, 1, perms, true);
+        return perms[1];
 end);
