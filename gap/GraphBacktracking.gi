@@ -1,5 +1,5 @@
 #
-# BacktrackKit: An Extensible, easy to understand backtracking framework
+# GraphBacktracking
 #
 # Implementations
 #
