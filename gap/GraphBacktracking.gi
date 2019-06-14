@@ -26,7 +26,8 @@ InstallMethod(RestoreState, [IsGBState, IsObject],
     state!.graphs := ShallowCopy(saved.graphs);
 end);
 
-GB_ApplyFilters := function(state, tracer, filters)
+InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
+  function(state, tracer, filters)
     local f, ret, applyFilter;
     if filters = fail then
         Info(InfoGB, 1, "Failed filter");
@@ -50,44 +51,13 @@ GB_ApplyFilters := function(state, tracer, filters)
         fi;
     od;
     return true;
-end;
+end);
 
-InitialiseConstraints := function(state, tracer, rbase)
-    local c, filters;
-    for c in state!.conlist do
-        if IsBound(c!.refine.initialise) then
-            filters := c!.refine.initialise(state!.ps, rbase);
-            if not GB_ApplyFilters(state, tracer, filters) then
-                return false;
-            fi;
-        fi;
-    od;
-    GB_MakeEquitableStrong(state!.ps, tracer, state!.graphs);
-    return true;
-end;
-
-GB_RefineConstraints := function(state, tracer, rbase)
-    local c, filters, cellCount;
-    cellCount := -1;
-    while cellCount <> PS_Cells(state!.ps) do
-        cellCount := PS_Cells(state!.ps);
-        for c in state!.conlist do
-            if IsBound(c!.refine.changed) then
-                filters := c!.refine.changed(state!.ps, rbase);
-                if not GB_ApplyFilters(state, tracer, filters) then
-                    return false;
-                fi;
-            fi;
-        od;
+InstallMethod(ConsolidateState, [IsGBState, IsTracer], 
+    function(state, tracer)
         GB_MakeEquitableStrong(state!.ps, tracer, state!.graphs);
-    od;
-    return true;
-end;
+    end);
 
-GB_FirstFixedPoint := function(state, tracer, rbase)
-    return InitialiseConstraints(state, tracer, rbase) and
-           GB_RefineConstraints(state, tracer, rbase);
-end;
 
 InstallGlobalFunction( GB_BuildRBase,
     function(state, branchselector)
@@ -105,7 +75,7 @@ InstallGlobalFunction( GB_BuildRBase,
         # partition stack as far as possible, to reach a stable point:
         # this is essentially reaching the root node of the search tree.
         # Record the trace into rbase.root.tracer.
-        GB_FirstFixedPoint(state, tracer, true);
+        FirstFixedPoint(state, tracer, true);
 
         # Continue building the RBase until a discrete partition is reached.
         while PS_Cells(state!.ps) <> PS_Points(state!.ps) do
@@ -122,7 +92,7 @@ InstallGlobalFunction( GB_BuildRBase,
                                     tracer := tracer
                                    ));
             PS_SplitCellByFunction(state!.ps, tracer, branchCell, {x} -> (x = branchPos));
-            GB_RefineConstraints(state, tracer, true);
+            RefineConstraints(state, tracer, true);
             Info(InfoBTKit, 2, "RBase level: ", PS_AsPartition(state!.ps));
         od;
 
@@ -196,7 +166,7 @@ InstallGlobalFunction( GB_Backtrack,
         # Split off point <v>, and then continue the backtrack search.
         saved := SaveState(state);
         if PS_SplitCellByFunction(state!.ps, tracer, branchInfo.cell, {x} -> x = v)
-           and GB_RefineConstraints(state, tracer, false)
+           and RefineConstraints(state, tracer, false)
            and GB_Backtrack(state, rbase, depth + 1, subgroup, special, find_single)
            then
             found := true;
@@ -226,7 +196,7 @@ InstallGlobalFunction( GB_SimpleSearch,
         perms := [ Group(()), [] ];
 
         tracer := FollowingTracer(rbase.root.tracer);
-        if GB_FirstFixedPoint(state, tracer, false) then
+        if FirstFixedPoint(state, tracer, false) then
             GB_Backtrack(state, rbase, 1, perms, true, false);
         fi;
         RestoreState(state, saved);
