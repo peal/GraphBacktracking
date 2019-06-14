@@ -6,6 +6,26 @@ for r in RecNames(BTKit_Con) do
     GB_Con.(r) := BTKit_Con.(r);
 od;
 
+DeclareRepresentation("IsGBRefiner", IsRefiner, ["name", "check", "refine"]);
+BindGlobal("GBRefinerType", NewType(BacktrackableStateFamily,
+                                       IsGBRefiner));
+
+InstallMethod(SaveState, [IsGBRefiner],
+    function(con)
+        if IsBound(con!.btdata) then
+            return StructuralCopy(con!.btdata);
+        else
+            return fail;
+        fi;
+    end);
+
+InstallMethod(RestoreState, [IsGBRefiner, IsObject],
+    function(con, state)
+        if state <> fail then
+            con!.btdata := StructuralCopy(state);
+        fi;
+    end);
+
 GB_Con.InGroup := function(n, group)
     local orbList,fillOrbits, fillOrbitals, orbMap, orbitalMap, pointMap, r;
 fillOrbits := function(pointlist)
@@ -47,7 +67,7 @@ fillOrbits := function(pointlist)
         check := {p} -> p in group,
         refine := rec(
             rBaseFinished := function(getRBase)
-                r.RBase := getRBase;
+                r!.RBase := getRBase;
             end,
 
             initialise := function(ps, buildingRBase)
@@ -67,7 +87,7 @@ fillOrbits := function(pointlist)
                     return [{x} -> points[x], rec(graphs := graphs)];
                 else
                     fixedps := PS_FixedPoints(ps);
-                    fixedrbase := PS_FixedPoints(r.RBase);
+                    fixedrbase := PS_FixedPoints(r!.RBase);
                     fixedrbase := fixedrbase{[1..Length(fixedps)]};
                     p := RepresentativeAction(group, fixedps, fixedrbase, OnTuples);
                     Info(InfoGB, 1, "Find mapping (InGroup):\n"
@@ -84,5 +104,5 @@ fillOrbits := function(pointlist)
                 fi;
             end)
         );
-        return r;
+        return Objectify(GBRefinerType, r);
     end;
