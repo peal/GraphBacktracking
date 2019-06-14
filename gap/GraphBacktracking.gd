@@ -5,6 +5,7 @@ DeclareGlobalFunction( "GB_Backtrack" );
 
 DeclareGlobalFunction( "GB_SimpleSearch" );
 
+DeclareGlobalFunction( "GB_SimpleSinglePermSearch" );
 
 #! @Description
 #!  Information about backtrack search

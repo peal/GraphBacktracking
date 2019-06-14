@@ -2,8 +2,7 @@ gap> LoadPackage("graphbacktracking", false);
 true
 gap> ps := PartitionStack(6);
 [ [ 1, 2, 3, 4, 5, 6 ] ]
-gap> g := [CycleDigraph(6)];
-[ <digraph with 6 vertices, 6 edges> ]
+gap> g := [CycleDigraph(6)];;
 gap> r := RecordingTracer();;
 gap> GB_MakeEquitableWeak(ps, r, g);
 gap> PS_AsPartition(ps);

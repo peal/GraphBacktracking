@@ -1,45 +1,16 @@
 GB_Con := rec();
 
+# Import BacktrackKit constraints
 
-GB_Con.TupleStab := function(n, fixpoints)
-    local fixlist, i, filters, r;
-    fixlist := [1..n]*0;
-    for i in [1..Length(fixpoints)] do
-        fixlist[fixpoints[i]] := i;
-    od;
-    filters := [rec(partition := {i} -> fixlist[i])];
-
-    r := rec(
-        name := "TupleStab",
-        check := {p} -> OnTuples(fixpoints, p) = fixpoints,
-        refine := rec(
-            initialise := function(state)
-                return filters;
-            end)
-        );
-    return r;
-end;
-
-GB_Con.SetStab := function(n, fixedset)
-    local fixlist, i, filters, r;
-    fixlist := BlistList([1..n], fixedset);
-    filters := [rec(partition := {i} -> fixlist[i])];
-
-    r := rec(
-        name := "SetStab",
-        check := {p} -> OnSets(fixedset, p) = fixedset,
-        refine := rec(
-            initialise := function(state)
-                return filters;
-            end)
-        );
-    return r;
-end;
+for r in RecNames(BTKit_Con) do
+    GB_Con.(r) := BTKit_Con.(r);
+od;
 
 GB_Con.InGroup := function(n, group)
     local orbList,fillOrbits, fillOrbitals, orbMap, orbitalMap, pointMap, r;
-    fillOrbits := function(pointlist)
+fillOrbits := function(pointlist)
         local orbs, array, i, j;
+        # caching
         if IsBound(pointMap[pointlist]) then
             return pointMap[pointlist];
         fi;
@@ -72,37 +43,44 @@ GB_Con.InGroup := function(n, group)
     orbitalMap := HashMap();
 
     r := rec(
-        name := "InGroup",
+        name := "InGroup-GB",
         check := {p} -> p in group,
         refine := rec(
-            initialise := function(state)
-                local fixedpoints, mapval, points, graphs;
-                fixedpoints := PS_FixedPoints(state.ps);
-                points := fillOrbits(fixedpoints);
-                graphs := fillOrbitals(fixedpoints);
-                return [rec(partition := {x} -> points[x]), rec(graphs := graphs)];
+            rBaseFinished := function(getRBase)
+                r.RBase := getRBase;
             end,
 
-            changed := function(state, rbase)
-                local fixedpoints, points, graphs, fixedps, fixedrbase, p;
-                if rbase = fail then
-                    fixedpoints := PS_FixedPoints(state.ps);
-                    fillOrbits(fixedpoints);
+            initialise := function(ps, buildingRBase)
+                local fixedpoints, mapval, points, graphs;
+                fixedpoints := PS_FixedPoints(ps);
+                points := fillOrbits(fixedpoints);
+                graphs := fillOrbitals(fixedpoints);
+                return [{x} -> points[x], rec(graphs := graphs)];
+            end,
+
+            changed := function(ps, buildingRBase)
+                local fixedpoints, points, fixedps, fixedrbase, p, graphs;
+                if buildingRBase then
+                    fixedpoints := PS_FixedPoints(ps);
                     points := fillOrbits(fixedpoints);
                     graphs := fillOrbitals(fixedpoints);
-                    return [rec(partition := {x} -> points[x]), rec(graphs := graphs)];
+                    return [{x} -> points[x], rec(graphs := graphs)];
                 else
-                    fixedps := PS_FixedPoints(state.ps);
-                    fixedrbase := PS_FixedPoints(rbase);
+                    fixedps := PS_FixedPoints(ps);
+                    fixedrbase := PS_FixedPoints(r.RBase);
                     fixedrbase := fixedrbase{[1..Length(fixedps)]};
                     p := RepresentativeAction(group, fixedps, fixedrbase, OnTuples);
-                    Info(InfoGB, 1,"Find mapping",fixedps,fixedrbase,p);
+                    Info(InfoGB, 1, "Find mapping (InGroup):\n"
+                         , "    fixed points:   ", fixedps, "\n"
+                         , "    fixed by rbase: ", fixedrbase, "\n"
+                         , "    map:            ", p);
+
                     if p = fail then
                         return fail;
                     fi;
                     points := pointMap[fixedrbase];
                     graphs := orbitalMap[fixedrbase];
-                    return [rec(partition := {x} -> points[x^p]), rec(graphs := List(graphs, {g} -> OnDigraphs(g, p)))];
+                    return [{x} -> points[x^p], rec(graphs := List(graphs, {g} -> OnDigraphs(g, p)))];
                 fi;
             end)
         );
