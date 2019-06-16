@@ -14,3 +14,4 @@
 #!   make the partition equitable.
 DeclareOperation("GB_MakeEquitableWeak", [IsPartitionStack, IsTracer, IsList]);
 DeclareOperation("GB_MakeEquitableStrong", [IsPartitionStack, IsTracer, IsList]);
+DeclareOperation("GB_MakeEquitableFull", [IsPartitionStack, IsTracer, IsList]);

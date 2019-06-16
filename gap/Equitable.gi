@@ -66,3 +66,54 @@ InstallMethod(GB_MakeEquitableStrong, [IsPartitionStack, IsTracer, IsList],
         od;
         return true;
 end);
+
+
+_GB.StateToDigraph := function(ps, graphlist)
+    local edges, n,i,j, colours;
+    n := PS_Points(ps);
+    # All edges will point to the bottom layer, but that's fine
+    edges := Concatenation(
+        List(graphlist, {g} -> List(g!.OutNeighbours, List)));
+    for i in [0..Length(graphlist)-2] do
+        for j in [1..n] do
+            Add(edges[i*n+j], (i+1)*n+j);
+        od;
+    od;
+
+    colours := PS_AsPartition(ps);
+    for i in [1..Length(graphlist)-1] do
+        Add(colours, [i*n+1..(i+1)*n]);
+    od;
+    Info(InfoGB, 3, edges, colours);
+    return [Digraph(edges), colours];
+end;
+
+_GB.AutoAndCanonical := function(ps, graphlist)
+    local ret;
+    ret := _GB.StateToDigraph(ps, graphlist);
+    return [BlissCanonicalLabelling(ret[1], ret[2]), AutomorphismGroup(ret[1], ret[2])];
+end;
+
+InstallMethod(GB_MakeEquitableFull, [IsPartitionStack, IsTracer, IsList],
+    function(ps, tracer, graphlist)
+        local ret, canonical, grp, conjgrp, orblist, orbs, i, o;
+        ret := _GB.AutoAndCanonical(ps, graphlist);
+        canonical := ret[1];
+        grp := ret[2];
+        conjgrp := grp^canonical;
+        orbs := Orbits(conjgrp, [1..PS_Points(ps)]);
+        orbs := Set(orbs, Set);
+        orbs := OnTuplesSets(orbs, canonical^-1);
+        orblist := [];
+        for i in [1..Length(orbs)] do
+            for o in orbs[i] do
+                orblist[o] := i;
+            od;
+        od;
+        Info(InfoGB, 2, "SplitWith:", ret, orblist);
+        if not PS_SplitCellsByFunction(ps, tracer, {x} -> orblist[x]) then
+                Info(InfoGB, 2, "EquitableFull trace violation");
+                return false;
+        fi;
+        return true;
+end);

@@ -54,8 +54,11 @@ InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
     return true;
 end);
 
+
+
+
 _GB.DefaultConfig :=
-    rec(cellSelector := BranchSelector_MinSizeCell, consolidator := GB_MakeEquitableWeak);
+    rec(cellSelector := BranchSelector_MinSizeCell, consolidator := GB_MakeEquitableStrong);
 
 InstallMethod(ConsolidateState, [IsGBState, IsTracer], 
     function(state, tracer)
