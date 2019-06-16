@@ -1,10 +1,7 @@
 GB_Con := rec();
 
-# Import BacktrackKit constraints
 
-for r in RecNames(BTKit_Con) do
-    GB_Con.(r) := BTKit_Con.(r);
-od;
+# Import BacktrackKit constraints
 
 DeclareRepresentation("IsGBRefiner", IsRefiner, ["name", "check", "refine"]);
 BindGlobal("GBRefinerType", NewType(BacktrackableStateFamily,
@@ -53,7 +50,7 @@ fillOrbits := function(pointlist)
             return orbitalMap[pointlist];
         fi;
 
-        orbs := OrbitalGraphs(Stabilizer(group, pointlist, OnTuples));
+        orbs := _GB.getOrbitalList(Stabilizer(group, pointlist, OnTuples), n);
         orbitalMap[pointlist] := orbs;
         return orbs;
     end;
@@ -100,7 +97,7 @@ fillOrbits := function(pointlist)
                     fi;
                     points := pointMap[fixedrbase];
                     graphs := orbitalMap[fixedrbase];
-                    return [{x} -> points[x^p], rec(graphs := List(graphs, {g} -> OnDigraphs(g, p)))];
+                    return [{x} -> points[x^p], rec(graphs := List(graphs, {g} -> OnDigraphs(g, p^-1)))];
                 fi;
             end)
         );

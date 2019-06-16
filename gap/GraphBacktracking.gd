@@ -1,7 +1,4 @@
 
-DeclareGlobalFunction( "GB_BuildRBase" );
-
-DeclareGlobalFunction( "GB_Backtrack" );
 
 DeclareGlobalFunction( "GB_SimpleSearch" );
 
