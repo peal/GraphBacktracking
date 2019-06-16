@@ -97,6 +97,9 @@ end;
 InstallMethod(GB_MakeEquitableFull, [IsPartitionStack, IsTracer, IsList],
     function(ps, tracer, graphlist)
         local ret, canonical, grp, conjgrp, orblist, orbs, i, o;
+        if IsEmpty(graphlist) then
+            return true;
+        fi;
         ret := _GB.AutoAndCanonical(ps, graphlist);
         canonical := ret[1];
         grp := ret[2];
