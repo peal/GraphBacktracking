@@ -73,5 +73,15 @@ InstallGlobalFunction( GB_SimpleSearch,
     {ps, conlist, conf...} -> _BTKit.SimpleSearch(_GB.BuildProblem(ps, conlist, conf)));
 
 InstallGlobalFunction( GB_SimpleSinglePermSearch,
-    {ps, conlist, conf...} -> _BTKit.SimpleSinglePermSearch(_GB.BuildProblem(ps, conlist, conf)));
+  function(ps, conlist, conf...)
+    local ret;
+    ret := _BTKit.SimpleSinglePermSearch(_GB.BuildProblem(ps, conlist, conf), true);
+    if IsEmpty(ret) then
+        return fail;
+    else
+        return ret[1];
+    fi;
+end);
 
+InstallGlobalFunction( GB_SimpleAllPermSearch,
+    {ps, conlist, conf...} -> _BTKit.SimpleSinglePermSearch(_GB.BuildProblem(ps, conlist, conf), false));
