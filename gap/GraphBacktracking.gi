@@ -85,3 +85,25 @@ end);
 
 InstallGlobalFunction( GB_SimpleAllPermSearch,
     {ps, conlist, conf...} -> _BTKit.SimpleSinglePermSearch(_GB.BuildProblem(ps, conlist, conf), false));
+
+#! Build the initial graph stack, and check if the automorphisms
+#! of this graph stack answer the problem. Returns the group if
+#! this is true, or 'fail' if not.
+InstallGlobalFunction( GB_CheckInitialGroup,
+    function(ps, conlist)
+        local state, tracer, sols, saved, gens, ret;
+        state := _GB.BuildProblem(ps, conlist,[]);
+        tracer := RecordingTracer();
+        saved := SaveState(state);
+        InitialiseConstraints(state, tracer, true);
+
+        sols := _GB.AutoAndCanonical(state!.ps, state!.graphs);
+        gens := GeneratorsOfGroup(sols[2]);
+        gens := List(gens, x -> PermList(ListPerm(x, PS_Points(state!.ps))));
+        Print(gens,"\n");
+        
+        ret := ForAll(gens, p -> BTKit_CheckSolution(p, state!.conlist));
+
+        RestoreState(state, saved);
+        return ret;
+end);
