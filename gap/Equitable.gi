@@ -77,9 +77,15 @@ end);
 _GB.StateToDigraph := function(ps, graphlist)
     local edges, n,i,j, colours;
     n := PS_Points(ps);
-    # All edges will point to the bottom layer, but that's fine
-    edges := Concatenation(
-        List(graphlist, {g} -> List(g!.OutNeighbours, List)));
+
+    if IsEmpty(graphlist) then
+        edges := ListWithIdenticalEntries(PS_Points(ps), []);
+    else
+        # All edges will point to the bottom layer, but that's fine
+        edges := Concatenation(
+            List(graphlist, {g} -> List(g!.OutNeighbours, List)));
+    fi;
+
     for i in [0..Length(graphlist)-2] do
         for j in [1..n] do
             Add(edges[i*n+j], (i+1)*n+j);
