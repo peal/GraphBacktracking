@@ -12,6 +12,7 @@
 #! @Description
 #!   Given a partition stack, and a list of graphs,
 #!   make the partition equitable.
+DeclareOperation("GB_MakeEquitableNone", [IsPartitionStack, IsTracer, IsList]);
 DeclareOperation("GB_MakeEquitableWeak", [IsPartitionStack, IsTracer, IsList]);
 DeclareOperation("GB_MakeEquitableStrong", [IsPartitionStack, IsTracer, IsList]);
 DeclareOperation("GB_MakeEquitableFull", [IsPartitionStack, IsTracer, IsList]);

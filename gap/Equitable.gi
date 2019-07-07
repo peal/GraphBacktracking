@@ -6,6 +6,12 @@ _GB.OutNeighboursSafe := function(graph, v)
     fi;
 end;
 
+InstallMethod(GB_MakeEquitableNone, [IsPartitionStack, IsTracer, IsList],
+    function(ps, tracer, graphlist)
+        return true;
+end);
+
+
 InstallMethod(GB_MakeEquitableWeak, [IsPartitionStack, IsTracer, IsList],
     function(ps, tracer, graphlist)
         local graph, cellcount, hm, v;
