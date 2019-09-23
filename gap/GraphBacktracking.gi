@@ -28,7 +28,7 @@ end);
 
 InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
   function(state, tracer, filters)
-    local f, ret, applyFilter;
+    local f, ret, applyFilter, g, pos;
     if filters = fail then
         Info(InfoGB, 1, "Failed filter");
         return false;
@@ -46,7 +46,17 @@ InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
                 return false;
             fi;
         elif IsBound(f.graphs) then
-            Append(state!.graphs, f.graphs);
+            for g in f.graphs do
+                pos := Position(state!.graphs, g);
+                if pos = fail or true then
+                    Add(state!.graphs, g);
+                else
+                    if not AddEvent(tracer, rec(type := "SkipGraph", pos := pos)) then
+                        Info(InfoGB, 1, "Failed graph merge");
+                        return false;
+                    fi;
+                fi;
+            od;
         else
             ErrorNoReturn("Invalid filter?");
         fi;
