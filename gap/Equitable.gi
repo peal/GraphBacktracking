@@ -1,18 +1,4 @@
-_GB.InNeighboursSafe := function(graph, v)
-    if v > DigraphNrVertices(graph) then
-        return [];
-    else
-        return InNeighboursOfVertex(graph, v);
-    fi;
-end;
 
-_GB.OutNeighboursSafe := function(graph, v)
-    if v > DigraphNrVertices(graph) then
-        return [];
-    else
-        return OutNeighboursOfVertex(graph, v);
-    fi;
-end;
 
 InstallMethod(GB_MakeEquitableNone, [IsPartitionStack, IsTracer, IsList],
     function(ps, tracer, graphlist)

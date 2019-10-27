@@ -98,3 +98,19 @@ _GB.getOrbitalList := function(sc, maxval)
     #Print(sc, ":", maxval, ":", graphlist, "\n");
 	return List(graphlist, Digraph);
 end;
+
+_GB.InNeighboursSafe := function(graph, v)
+    if v > DigraphNrVertices(graph) then
+        return [];
+    else
+        return InNeighboursOfVertex(graph, v);
+    fi;
+end;
+
+_GB.OutNeighboursSafe := function(graph, v)
+    if v > DigraphNrVertices(graph) then
+        return [];
+    else
+        return OutNeighboursOfVertex(graph, v);
+    fi;
+end;
