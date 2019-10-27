@@ -16,9 +16,9 @@ InstallMethod(GB_MakeEquitableWeak, [IsPartitionStack, IsTracer, IsList],
                 #Print(graph,"\n");
                 hm := [];
                 for v in [1..PS_Points(ps)] do
-                    hm[v] := List(_GB.OutNeighboursSafe(graph, v), {x} -> PS_CellOfPoint(ps, x));
+                    hm[v] := List(_BTKit.OutNeighboursSafe(graph, v), {x} -> PS_CellOfPoint(ps, x));
                     # We negate to distinguish in and out neighbours ---------v
-                    Append(hm[v], List(_GB.InNeighboursSafe(graph, v), {x} -> -PS_CellOfPoint(ps, x)));
+                    Append(hm[v], List(_BTKit.InNeighboursSafe(graph, v), {x} -> -PS_CellOfPoint(ps, x)));
                     #Print(v,":",hm[v],"\n");
                     Sort(hm[v]);
                 od;
@@ -43,13 +43,13 @@ InstallMethod(GB_MakeEquitableStrong, [IsPartitionStack, IsTracer, IsList],
             for gnum in [1..Length(graphlist)] do
                 graph := graphlist[gnum];
                 for v in [1..PS_Points(ps)] do
-                    for n in _GB.OutNeighboursSafe(graph, v) do
+                    for n in _BTKit.OutNeighboursSafe(graph, v) do
                         if not IsBound(hm[v][n]) then
                             hm[v][n] := [];
                         fi;
                         Add(hm[v][n], [gnum, PS_CellOfPoint(ps, n), true]);
                     od;
-                    for n in _GB.OutNeighboursSafe(graph, v) do
+                    for n in _BTKit.InNeighboursSafe(graph, v) do
                         if not IsBound(hm[v][n]) then
                             hm[v][n] := [];
                         fi;

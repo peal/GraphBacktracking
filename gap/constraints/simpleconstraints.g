@@ -51,7 +51,7 @@ fillOrbits := function(pointlist)
             return orbitalMap[pointlist];
         fi;
 
-        orbs := _GB.getOrbitalList(Stabilizer(group, pointlist, OnTuples), n);
+        orbs := _BTKit.getOrbitalList(Stabilizer(group, pointlist, OnTuples), n);
         orbitalMap[pointlist] := orbs;
         return orbs;
     end;
