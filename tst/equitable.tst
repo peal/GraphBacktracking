@@ -16,7 +16,17 @@ gap> PS_AsPartition(ps);
 gap> GB_MakeEquitableWeak(ps, r, g);
 true
 gap> PS_AsPartition(ps);
-[ [ 3 ], [ 1 ], [ 2 ], [ 5 ], [ 6 ], [ 4 ] ]
+[ [ 3 ], [ 2 ], [ 4 ], [ 1 ], [ 5 ], [ 6 ] ]
+
+#
+gap> ps := PartitionStack(6);
+[ [ 1, 2, 3, 4, 5, 6 ] ]
+gap> g := [Digraph([[2,3],[],[],[],[],[]])];;
+gap> r := RecordingTracer();;
+gap> GB_MakeEquitableWeak(ps, r, g);
+true
+gap> PS_AsPartition(ps);
+[ [ 4, 5, 6 ], [ 1 ], [ 2, 3 ] ]
 
 #
 gap> ps := PartitionStack(6);

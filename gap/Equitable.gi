@@ -1,3 +1,11 @@
+_GB.InNeighboursSafe := function(graph, v)
+    if v > DigraphNrVertices(graph) then
+        return [];
+    else
+        return InNeighboursOfVertex(graph, v);
+    fi;
+end;
+
 _GB.OutNeighboursSafe := function(graph, v)
     if v > DigraphNrVertices(graph) then
         return [];
@@ -24,7 +32,7 @@ InstallMethod(GB_MakeEquitableWeak, [IsPartitionStack, IsTracer, IsList],
                 for v in [1..PS_Points(ps)] do
                     hm[v] := List(_GB.OutNeighboursSafe(graph, v), {x} -> PS_CellOfPoint(ps, x));
                     # We negate to distinguish in and out neighbours ---------v
-                    Append(hm[v], List(_GB.OutNeighboursSafe(graph, v), {x} -> -PS_CellOfPoint(ps, x)));
+                    Append(hm[v], List(_GB.InNeighboursSafe(graph, v), {x} -> -PS_CellOfPoint(ps, x)));
                     #Print(v,":",hm[v],"\n");
                     Sort(hm[v]);
                 od;
