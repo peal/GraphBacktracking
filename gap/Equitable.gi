@@ -97,7 +97,11 @@ end;
 _GB.AutoAndCanonical := function(ps, graphlist)
     local ret;
     ret := _GB.StateToDigraph(ps, graphlist);
-    return [BlissCanonicalLabelling(ret[1], ret[2]), AutomorphismGroup(ret[1], ret[2])];
+    return rec(
+        graph := ret,
+        canonicalperm := BlissCanonicalLabelling(ret[1], ret[2]),
+        grp := AutomorphismGroup(ret[1], ret[2])
+    );
 end;
 
 InstallMethod(GB_MakeEquitableFull, [IsPartitionStack, IsTracer, IsList],
@@ -110,8 +114,8 @@ InstallMethod(GB_MakeEquitableFull, [IsPartitionStack, IsTracer, IsList],
             return false;
         fi;
         ret := _GB.AutoAndCanonical(ps, graphlist);
-        canonical := ret[1];
-        grp := ret[2];
+        canonical := ret.canonicalperm;
+        grp := ret.grp;
         conjgrp := grp^canonical;
         orbs := Orbits(conjgrp, [1..PS_Points(ps)]);
         orbs := Set(orbs, Set);

@@ -108,11 +108,40 @@ InstallGlobalFunction( GB_CheckInitialGroup,
         InitialiseConstraints(state, tracer, true);
 
         sols := _GB.AutoAndCanonical(state!.ps, state!.graphs);
-        gens := GeneratorsOfGroup(sols[2]);
+        gens := GeneratorsOfGroup(sols.grp);
         gens := List(gens, x -> PermList(ListPerm(x, PS_Points(state!.ps))));
         
         ret := ForAll(gens, p -> BTKit_CheckSolution(p, state!.conlist));
 
         RestoreState(state, saved);
-        return [gens,ret];
+        return rec(gens := gens, answer := ret);
+end);
+
+
+InstallGlobalFunction( GB_CheckInitialCoset,
+    function(ps, conlist)
+        local state, tracer, rbase, sols1, sols2, saved, autgraph1, autgraph2;
+        state := _GB.BuildProblem(ps, conlist,[]);
+        tracer := RecordingTracer();
+        saved := SaveState(state);
+        InitialiseConstraints(state, tracer, true);
+
+        sols1 := _GB.AutoAndCanonical(state!.ps, state!.graphs);
+
+        RestoreState(state, saved);
+
+        rbase := BuildRBase(state, state!.config.cellSelector);
+        FinaliseRBaseForConstraints(state, rbase);
+
+        tracer := RecordingTracer();
+        saved := SaveState(state);
+        InitialiseConstraints(state, tracer, false);
+
+        sols2 := _GB.AutoAndCanonical(state!.ps, state!.graphs);
+
+        RestoreState(state, saved);
+
+        autgraph1 := [OnDigraphs(sols1.graph[1], sols1.canonicalperm), List(sols1.graph[2], x -> OnSets(x, sols1.canonicalperm))];
+        autgraph2 := [OnDigraphs(sols2.graph[1], sols2.canonicalperm), List(sols2.graph[2], x -> OnSets(x, sols2.canonicalperm))];
+        return rec(graph1 := autgraph1, graph2 := autgraph2, equal := autgraph1 = autgraph2);
 end);
