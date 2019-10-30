@@ -10,7 +10,7 @@ InstallMethod(GB_MakeEquitableWeak, [IsPartitionStack, IsTracer, IsList],
     function(ps, tracer, graphlist)
         local graph, cellcount, hm, v;
         cellcount := -1;
-        while cellcount <> PS_Cells(ps) do
+        while cellcount <> PS_Cells(ps) and PS_Cells(ps) <> PS_Points(ps) do
             cellcount := PS_Cells(ps);
             for graph in graphlist do
                 #Print(graph,"\n");
@@ -37,7 +37,7 @@ InstallMethod(GB_MakeEquitableStrong, [IsPartitionStack, IsTracer, IsList],
     function(ps, tracer, graphlist)
         local graph, gnum, cellcount, hm, v, n, hmsetset;
         cellcount := -1;
-        while cellcount <> PS_Cells(ps) do
+        while cellcount <> PS_Cells(ps) and PS_Cells(ps) <> PS_Points(ps) do
             cellcount := PS_Cells(ps);
             hm := List([1..PS_Points(ps)], {x} -> HashMap());
             for gnum in [1..Length(graphlist)] do
