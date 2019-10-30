@@ -48,7 +48,7 @@ InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
         elif IsBound(f.graphs) then
             for g in f.graphs do
                 pos := Position(state!.graphs, g);
-                if pos = fail or true then
+                if pos = fail then
                     Add(state!.graphs, g);
                 else
                     if not AddEvent(tracer, rec(type := "SkipGraph", pos := pos)) then
