@@ -45,10 +45,10 @@ Persons := [
 
 SourceRepository := rec(
     Type := "git",
-    URL := "https://github.com/ChrisJefferson/GraphBacktracking",
+    URL := "https://github.com/peal/GraphBacktracking",
 ),
 IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
-PackageWWWHome  := "https://ChrisJefferson.github.io/GraphBacktracking/",
+PackageWWWHome  := "https://peal.github.io/GraphBacktracking/",
 PackageInfoURL  := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
 README_URL      := Concatenation( ~.PackageWWWHome, "README.md" ),
 ArchiveURL      := Concatenation( ~.SourceRepository.URL,
