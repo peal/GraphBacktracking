@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "GraphBacktracking",
 Subtitle := "Super Secret Awesome Searching",
-Version := "0.2",
-Date := "27/10/2019", # dd/mm/yyyy format
+Version := "0.3",
+Date := "7/11/2019", # dd/mm/yyyy format
 
 Persons := [
   rec(
@@ -31,22 +31,6 @@ Persons := [
   rec(
     IsAuthor := true,
     IsMaintainer := true,
-    FirstNames := "Markus",
-    LastName := "Pfeiffer",
-    WWWHome := "http://www.morphism.de/~markusp/",
-    Email := "markus.pfeiffer@morphism.de",
-    PostalAddress := Concatenation(
-               "School of Computer Science\n",
-               "University of St Andrews\n",
-               "Jack Cole Building, North Haugh\n",
-               "St Andrews, Fife, KY16 9SX\n",
-               "United Kingdom" ),
-    Place := "St Andrews",
-    Institution := "University of St Andrews",
-  ),
-  rec(
-    IsAuthor := true,
-    IsMaintainer := true,
     FirstNames := "Wilf",
     LastName := "Wilson",
     WWWHome := "http://wilf.me",
@@ -56,17 +40,6 @@ Persons := [
                                     "Germany"]),
     Place := "Halle (Saale), Germany",
     Institution := "University of Halle-Wittenberg",
-  ),
-  rec(
-    IsAuthor := true,
-    IsMaintainer := false,
-    FirstNames := "Mun See",
-    LastName := "Chang",
-    #WWWHome := TODO,
-    Email := "msc2@st-andrews.ac.uk",
-    PostalAddress := "School of Computer Science, North Haugh, St Andrews, Fife, KY16 9SX, Scotland",
-    Place := "St Andrews",
-    Institution := "University of St Andrews",
   ),
 ],
 
@@ -107,7 +80,7 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">= 4.9",
-  NeededOtherPackages := [ ["BacktrackKit", ">= 0.2",], ["digraphs", ">= 1.0.0"] ],
+  NeededOtherPackages := [ ["BacktrackKit", ">= 0.3",], ["digraphs", ">= 1.0.0"] ],
   SuggestedOtherPackages := [ ],
   ExternalConditions := [ ],
 ),
