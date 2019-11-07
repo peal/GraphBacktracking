@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "GraphBacktracking",
 Subtitle := "Super Secret Awesome Searching",
-Version := "0.3",
-Date := "7/11/2019", # dd/mm/yyyy format
+Version := "0.3.0",
+Date := "07/11/2019", # dd/mm/yyyy format
 
 Persons := [
   rec(
@@ -45,10 +45,10 @@ Persons := [
 
 SourceRepository := rec(
     Type := "git",
-    URL := "https://github.com/ChrisJefferson/GraphBacktracking",
+    URL := "https://github.com/peal/GraphBacktracking",
 ),
 IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
-PackageWWWHome  := "https://ChrisJefferson.github.io/GraphBacktracking/",
+PackageWWWHome  := "https://peal.github.io/GraphBacktracking/",
 PackageInfoURL  := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
 README_URL      := Concatenation( ~.PackageWWWHome, "README.md" ),
 ArchiveURL      := Concatenation( ~.SourceRepository.URL,

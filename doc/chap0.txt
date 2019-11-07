@@ -6,19 +6,15 @@
                         [1X Super Secret Awesome Searching [101X
   
   
-                                      0.1
+                                     0.3.0
   
   
-                                6 December 2018
+                                7 November 2019
   
   
                              Christopher Jefferson
   
-                                Markus Pfeiffer
-  
                                   Wilf Wilson
-  
-                                 Mun See Chang
   
   
   
@@ -30,26 +26,10 @@
                 [33X[0;14YUK[133X
   
   
-  Markus Pfeiffer
-      Email:    [7Xmailto:markus.pfeiffer@morphism.de[107X
-      Homepage: [7Xhttp://www.morphism.de/~markusp/[107X
-      Address:  [33X[0;14YSchool of Computer Science[133X
-                [33X[0;14YUniversity of St Andrews[133X
-                [33X[0;14YJack Cole Building, North Haugh[133X
-                [33X[0;14YSt Andrews, Fife, KY16 9SX[133X
-                [33X[0;14YUnited Kingdom[133X
-  
-  
   Wilf Wilson
       Email:    [7Xmailto:gap@wilf-wilson.net[107X
       Homepage: [7Xhttp://wilf.me[107X
       Address:  [33X[0;14YTheodor-Lieser-Straße 5, 06120 Halle (Saale), Germany[133X
-  
-  
-  Mun See Chang
-      Email:    [7Xmailto:msc2@st-andrews.ac.uk[107X
-      Address:  [33X[0;14YSchool  of  Computer  Science,  North Haugh, St Andrews, Fife,
-                KY16 9SX, Scotland[133X
   
   
   
