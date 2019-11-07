@@ -11,7 +11,7 @@ SetPackageInfo( rec(
 PackageName := "GraphBacktracking",
 Subtitle := "Super Secret Awesome Searching",
 Version := "0.3",
-Date := "7/11/2019", # dd/mm/yyyy format
+Date := "07/11/2019", # dd/mm/yyyy format
 
 Persons := [
   rec(
