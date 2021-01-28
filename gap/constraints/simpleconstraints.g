@@ -79,7 +79,8 @@ fillOrbits := function(pointlist)
                     points := fillOrbits(fixedpoints);
                     graphs := fillOrbitals(fixedpoints);
                     Info(InfoGB, 5, "Building RBase:", points);
-                    return [{x} -> points[x], rec(graphs := graphs)];
+                    return Concatenation([{x} -> points[x]]
+                                        ,List(graphs, g -> rec(graph := g)));
                 else
                     fixedps := PS_FixedPoints(ps);
                     Info(InfoGB, 1, "fixed: ", fixedps);
@@ -105,10 +106,12 @@ fillOrbits := function(pointlist)
                     points := pointMap[fixedrbase];
                     graphs := orbitalMap[fixedrbase];
                     if perm = () then
-                        return [{x} -> points[x^p], rec(graphs := List(graphs, {g} -> OnDigraphs(g, p^-1)))];
+                        return Concatenation([{x} -> points[x^p]],
+                         List(graphs, {g} -> rec(graph := OnDigraphs(g, p^-1))));
                     else
                         Info(InfoGB, 5, fixedps, fixedrbase, List([1..n], i -> points[i^(p*invperm)]));
-                        return [{x} -> points[x^(invperm*p)], rec(graphs := List(graphs, {g} -> OnDigraphs(g, (invperm*p)^-1)))];
+                        return Concatenation([{x} -> points[x^(invperm*p)]],
+                          List(graphs, {g} -> rec(graph := OnDigraphs(g, (invperm*p)^-1))));
                     fi;
                 fi;
             end)

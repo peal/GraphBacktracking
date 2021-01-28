@@ -62,22 +62,21 @@ InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
                 Info(InfoGB, 1, "Trace violation");
                 return false;
             fi;
-        elif IsBound(f.graphs) then
-            for g in f.graphs do
-                pos := Position(state!.raw_graphs, g);
-                if pos = fail then
-                    Add(state!.raw_graphs, g);
-                    if PS_Points(state!.ps) < DigraphNrVertices(g) then
-                        g := _GB.ShiftGraph(state!.ps, g);
-                    fi;
-                    Add(state!.graphs, g);
-                else
-                    if not AddEvent(tracer, rec(type := "SkipGraph", pos := pos)) then
-                        Info(InfoGB, 1, "Failed graph merge");
-                        return false;
-                    fi;
+        elif IsBound(f.graph) then
+            g := f.graph;
+            pos := Position(state!.raw_graphs, g);
+            if pos = fail then
+                Add(state!.raw_graphs, g);
+                if PS_Points(state!.ps) < DigraphNrVertices(g) then
+                    g := _GB.ShiftGraph(state!.ps, g);
                 fi;
-            od;
+                Add(state!.graphs, g);
+            else
+                if not AddEvent(tracer, rec(type := "SkipGraph", pos := pos)) then
+                    Info(InfoGB, 1, "Failed graph merge");
+                    return false;
+                fi;
+            fi;
         else
             ErrorNoReturn("Invalid filter?");
         fi;

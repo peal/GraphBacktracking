@@ -13,7 +13,7 @@ GB_Con.NormaliserSimple := function(n, group)
         
         graph := ListWithIdenticalEntries(n, []);
         Append(graph, orbs);
-        return [Digraph(graph)];
+        return Digraph(graph);
     end;
 
     r := rec(
@@ -28,7 +28,7 @@ GB_Con.NormaliserSimple := function(n, group)
             changed := function(ps, buildingRBase)
                 local fixedpoints;
                 fixedpoints := PS_FixedPoints(ps);
-                return rec(graphs := getOrbits(fixedpoints));
+                return rec(graph := getOrbits(fixedpoints));
             end)
         );
         return Objectify(GBRefinerType, r);
