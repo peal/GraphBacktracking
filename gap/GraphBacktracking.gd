@@ -11,5 +11,8 @@ DeclareGlobalFunction( "GB_CheckInitialCoset" );
 
 #! @Description
 #!  Information about backtrack search
-DeclareInfoClass( "InfoGB" );
-SetInfoLevel(InfoGB, 0);
+InfoGB := InfoBTKit;
+
+# Merge infos
+#DeclareInfoClass( "InfoGB" );
+#SetInfoLevel(InfoGB, 0);

@@ -10,12 +10,12 @@ InstallMethod(GB_MakeEquitableWeak, [IsPartitionStack, IsTracer, IsList],
     function(ps, tracer, graphlist)
         local graph, cellcount, hm, v;
         cellcount := -1;
-        while cellcount <> PS_Cells(ps) and PS_Cells(ps) <> PS_Points(ps) do
+        while cellcount <> PS_Cells(ps) and PS_Cells(ps) <> PS_ExtendedPoints(ps) do
             cellcount := PS_Cells(ps);
             for graph in graphlist do
                 #Print(graph,"\n");
                 hm := [];
-                for v in [1..PS_Points(ps)] do
+                for v in [1..PS_ExtendedPoints(ps)] do
                     hm[v] := List(_BTKit.OutNeighboursSafe(graph, v), {x} -> PS_CellOfPoint(ps, x));
                     # We negate to distinguish in and out neighbours ---------v
                     Append(hm[v], List(_BTKit.InNeighboursSafe(graph, v), {x} -> -PS_CellOfPoint(ps, x)));
@@ -37,12 +37,12 @@ InstallMethod(GB_MakeEquitableStrong, [IsPartitionStack, IsTracer, IsList],
     function(ps, tracer, graphlist)
         local graph, gnum, cellcount, hm, v, n, hmsetset;
         cellcount := -1;
-        while cellcount <> PS_Cells(ps) and PS_Cells(ps) <> PS_Points(ps) do
+        while cellcount <> PS_Cells(ps) and PS_Cells(ps) <> PS_ExtendedPoints(ps) do
             cellcount := PS_Cells(ps);
-            hm := List([1..PS_Points(ps)], {x} -> HashMap());
+            hm := List([1..PS_ExtendedPoints(ps)], {x} -> HashMap());
             for gnum in [1..Length(graphlist)] do
                 graph := graphlist[gnum];
-                for v in [1..PS_Points(ps)] do
+                for v in [1..PS_ExtendedPoints(ps)] do
                     for n in _BTKit.OutNeighboursSafe(graph, v) do
                         if not IsBound(hm[v][n]) then
                             hm[v][n] := [];
@@ -57,7 +57,7 @@ InstallMethod(GB_MakeEquitableStrong, [IsPartitionStack, IsTracer, IsList],
                     od;
                 od;
             od;
-            hmsetset := List([1..PS_Points(ps)], {x} -> SortedList(List(Values(hm[x]), SortedList)) );
+            hmsetset := List([1..PS_ExtendedPoints(ps)], {x} -> SortedList(List(Values(hm[x]), SortedList)) );
             if not PS_SplitCellsByFunction(ps, tracer, {x} -> hmsetset[x]) then
                 Info(InfoGB, 2, "EquitableStrong trace violation");
                 return false;
@@ -70,10 +70,10 @@ end);
 
 _GB.StateToDigraph := function(ps, graphlist)
     local edges, n,i,j, colours;
-    n := PS_Points(ps);
+    n := PS_ExtendedPoints(ps);
 
     if IsEmpty(graphlist) then
-        edges := ListWithIdenticalEntries(PS_Points(ps), []);
+        edges := ListWithIdenticalEntries(PS_ExtendedPoints(ps), []);
     else
         # All edges will point to the bottom layer, but that's fine
         edges := Concatenation(

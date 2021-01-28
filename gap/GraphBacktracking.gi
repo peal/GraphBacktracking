@@ -13,7 +13,8 @@ InstallMethod(SaveState, [IsGBState],
  function(state)
     return rec(depth := PS_Cells(state!.ps),
                refiners := List(state!.conlist, SaveState),
-               graphs := ShallowCopy(state!.graphs));
+               graphs := ShallowCopy(state!.graphs),
+               raw_graphs := ShallowCopy(state!.raw_graphs));
 end);
 
 InstallMethod(RestoreState, [IsGBState, IsObject],
@@ -24,7 +25,23 @@ InstallMethod(RestoreState, [IsGBState, IsObject],
         RestoreState(state!.conlist[c], saved.refiners[c]);
     od;
     state!.graphs := ShallowCopy(saved.graphs);
+    state!.raw_graphs := ShallowCopy(saved.raw_graphs);
 end);
+
+_GB.ShiftGraph := function(ps, in_graph)
+    local extra_pnts, old_max, vert_map, new_graph;
+
+    extra_pnts := DigraphNrVertices(in_graph) - PS_Points(ps);
+
+    old_max := PS_ExtendedPoints(ps);
+    PS_Extend(ps, extra_pnts);
+
+    vert_map := Concatenation([1..PS_Points(ps)], [old_max+1..old_max+extra_pnts]);
+
+    new_graph := List(DigraphEdges(in_graph), {x} -> [vert_map[x[1]], vert_map[x[2]]]);
+
+    return DigraphByEdges(new_graph);
+end;
 
 InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
   function(state, tracer, filters)
@@ -47,8 +64,12 @@ InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
             fi;
         elif IsBound(f.graphs) then
             for g in f.graphs do
-                pos := Position(state!.graphs, g);
+                pos := Position(state!.raw_graphs, g);
                 if pos = fail then
+                    Add(state!.raw_graphs, g);
+                    if PS_Points(state!.ps) < DigraphNrVertices(g) then
+                        g := _GB.ShiftGraph(state!.ps, g);
+                    fi;
                     Add(state!.graphs, g);
                 else
                     if not AddEvent(tracer, rec(type := "SkipGraph", pos := pos)) then
@@ -76,7 +97,7 @@ InstallMethod(ConsolidateState, [IsGBState, IsTracer],
     end);
 
 _GB.BuildProblem :=
-    {ps, conlist, conf} -> Objectify(GBStateType, rec(ps := ps, conlist := conlist, graphs := [],
+    {ps, conlist, conf} -> Objectify(GBStateType, rec(ps := ps, conlist := conlist, graphs := [], raw_graphs := [],
                             config := _BTKit.FillConfig(conf, _GB.DefaultConfig)));
 
 InstallGlobalFunction( GB_SimpleSearch,
