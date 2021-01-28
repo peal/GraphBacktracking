@@ -18,6 +18,11 @@
 /doc/*.tex
 /doc/*.toc
 /doc/manual.pdf
+/doc/title.xml
+/doc/GraphBacktracking.xml
+/doc/_Chapter_*.xml
+/doc/_Chunks.xml
+/doc/_AutoDocMainFile.xml
 
 /bin/
 /Makefile
