@@ -3,7 +3,7 @@ GB_Con.NormaliserSimple := function(n, group)
     local orbList,getOrbits, orbMap, pointMap, r, invperm,minperm;
 
     getOrbits := function(pointlist)
-        local G,orbs,graph;
+        local G,orbs,graph,cols;
 
         G := Stabilizer(group, pointlist, OnTuples);
 
@@ -12,8 +12,10 @@ GB_Con.NormaliserSimple := function(n, group)
         orbs := Filtered(orbs, o -> Length(o)>1);
         
         graph := ListWithIdenticalEntries(n, []);
+        cols := ListWithIdenticalEntries(n, 0);
         Append(graph, orbs);
-        return Digraph(graph);
+        Append(cols, List(orbs, {x} -> Length(x)));
+        return rec( graph := Digraph(graph), vertlabels := {x} -> cols[x]);
     end;
 
     r := rec(
@@ -28,7 +30,7 @@ GB_Con.NormaliserSimple := function(n, group)
             changed := function(ps, buildingRBase)
                 local fixedpoints;
                 fixedpoints := PS_FixedPoints(ps);
-                return rec(graph := getOrbits(fixedpoints));
+                return getOrbits(fixedpoints);
             end)
         );
         return Objectify(GBRefinerType, r);

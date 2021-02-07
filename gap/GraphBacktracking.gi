@@ -28,17 +28,28 @@ InstallMethod(RestoreState, [IsGBState, IsObject],
     state!.raw_graphs := ShallowCopy(saved.raw_graphs);
 end);
 
-_GB.ShiftGraph := function(ps, in_graph)
-    local extra_pnts, old_max, vert_map, new_graph;
+_GB.ShiftGraph := function(ps, f, state, tracer)
+    local extra_pnts, old_max, vert_map, new_graph, new_cell;
 
-    extra_pnts := DigraphNrVertices(in_graph) - PS_Points(ps);
+    extra_pnts := DigraphNrVertices(f.graph) - PS_Points(ps);
+    if not AddEvent(tracer, rec(type := "NewVertices", pos := extra_pnts)) then
+        Info(InfoGB, 1, "number of extra vertices not consistent");
+        return false;
+    fi;
 
     old_max := PS_ExtendedPoints(ps);
-    PS_Extend(ps, extra_pnts);
+    new_cell := PS_Extend(ps, extra_pnts);
+
+    if IsBound(f.vertlabels) then
+        # Split the new cells by vertex colour (only worry about the new vertices here)
+        if not PS_SplitCellByFunction(state!.ps, tracer, {x} -> f.vertlabels(x-extra_pnts), new_cell) then
+            return false;
+        fi;
+    fi;
 
     vert_map := Concatenation([1..PS_Points(ps)], [old_max+1..old_max+extra_pnts]);
 
-    new_graph := List(DigraphEdges(in_graph), {x} -> [vert_map[x[1]], vert_map[x[2]]]);
+    new_graph := List(DigraphEdges(f.graph), {x} -> [vert_map[x[1]], vert_map[x[2]]]);
 
     return DigraphByEdges(new_graph);
 end;
@@ -58,17 +69,32 @@ InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
     for f in filters do
         if IsFunction(f) then
             if not PS_SplitCellsByFunction(state!.ps, tracer, f) then
-            #Error("xyz");
                 Info(InfoGB, 1, "Trace violation");
                 return false;
             fi;
+        elif IsBound(f.vertlabels) then
+            # Note that this only covers the 'basic' vertices, any extended ones
+            # are handled later in 'ShiftGraph'
+            if not PS_SplitCellsByFunction(state!.ps, tracer, f.vertlabels) then
+                Info(InfoGB, 1, "Trace violation (vertex colouring)");
+                return false;
+            fi;
+        
         elif IsBound(f.graph) then
-            g := f.graph;
-            pos := Position(state!.raw_graphs, g);
+            Assert(2, IsSubset(["graph", "vertlabels"], RecNames(f)));
+            # TODO (maybe) -- this skipping of merged graphs ignores
+            # vertex colourings.
+            pos := Position(state!.raw_graphs, f.graph);
             if pos = fail then
-                Add(state!.raw_graphs, g);
-                if PS_Points(state!.ps) < DigraphNrVertices(g) then
-                    g := _GB.ShiftGraph(state!.ps, g);
+                Add(state!.raw_graphs, f.graph);
+                if PS_Points(state!.ps) < DigraphNrVertices(f.graph) then
+                    g := _GB.ShiftGraph(state!.ps, f, state, tracer);
+                    if g = false then
+                        # Refining extra colours of new graph failed
+                        return false;
+                    fi;
+                else
+                    g := f.graph;
                 fi;
                 Add(state!.graphs, g);
             else
