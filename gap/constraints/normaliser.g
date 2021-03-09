@@ -15,6 +15,7 @@ GB_Con.NormaliserSimple := function(n, group)
         cols := ListWithIdenticalEntries(n, 0);
         Append(graph, orbs);
         Append(cols, List(orbs, {x} -> Length(x)));
+        Info(InfoGB, 2, "Made graph: ", Digraph(graph));
         return rec( graph := Digraph(graph), vertlabels := {x} -> cols[x]);
     end;
 

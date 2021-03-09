@@ -29,7 +29,7 @@ InstallMethod(RestoreState, [IsGBState, IsObject],
 end);
 
 _GB.ShiftGraph := function(ps, f, state, tracer)
-    local extra_pnts, old_max, vert_map, new_graph, new_cell;
+    local extra_pnts, old_max, vert_map, new_graph, new_cell, shift_size;
 
     extra_pnts := DigraphNrVertices(f.graph) - PS_Points(ps);
     if not AddEvent(tracer, rec(type := "NewVertices", pos := extra_pnts)) then
@@ -38,11 +38,12 @@ _GB.ShiftGraph := function(ps, f, state, tracer)
     fi;
 
     old_max := PS_ExtendedPoints(ps);
+    shift_size := old_max - PS_Points(ps);
     new_cell := PS_Extend(ps, extra_pnts);
 
     if IsBound(f.vertlabels) then
         # Split the new cells by vertex colour (only worry about the new vertices here)
-        if not PS_SplitCellByFunction(state!.ps, tracer, {x} -> f.vertlabels(x-extra_pnts), new_cell) then
+        if not PS_SplitCellByFunction(state!.ps, tracer, new_cell, {x} -> f.vertlabels(x-shift_size)) then
             return false;
         fi;
     fi;
@@ -67,44 +68,44 @@ InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
     fi;
 
     for f in filters do
+        Assert(2, IsFunction(f) or IsSubset(["graph", "vertlabels"], RecNames(f)));
         if IsFunction(f) then
             if not PS_SplitCellsByFunction(state!.ps, tracer, f) then
                 Info(InfoGB, 1, "Trace violation");
                 return false;
             fi;
-        elif IsBound(f.vertlabels) then
-            # Note that this only covers the 'basic' vertices, any extended ones
-            # are handled later in 'ShiftGraph'
-            if not PS_SplitCellsByFunction(state!.ps, tracer, f.vertlabels) then
-                Info(InfoGB, 1, "Trace violation (vertex colouring)");
-                return false;
-            fi;
-        
-        elif IsBound(f.graph) then
-            Assert(2, IsSubset(["graph", "vertlabels"], RecNames(f)));
-            # TODO (maybe) -- this skipping of merged graphs ignores
-            # vertex colourings.
-            pos := Position(state!.raw_graphs, f.graph);
-            if pos = fail then
-                Add(state!.raw_graphs, f.graph);
-                if PS_Points(state!.ps) < DigraphNrVertices(f.graph) then
-                    g := _GB.ShiftGraph(state!.ps, f, state, tracer);
-                    if g = false then
-                        # Refining extra colours of new graph failed
-                        return false;
-                    fi;
-                else
-                    g := f.graph;
-                fi;
-                Add(state!.graphs, g);
-            else
-                if not AddEvent(tracer, rec(type := "SkipGraph", pos := pos)) then
-                    Info(InfoGB, 1, "Failed graph merge");
+        else
+            if IsBound(f.vertlabels) then
+                # Note that this only covers the 'basic' vertices, any extended ones
+                # are handled later in 'ShiftGraph'
+                if not PS_SplitCellsByFunction(state!.ps, tracer, f.vertlabels) then
+                    Info(InfoGB, 1, "Trace violation (vertex colouring)");
                     return false;
                 fi;
             fi;
-        else
-            ErrorNoReturn("Invalid filter?");
+            if IsBound(f.graph) then
+                # TODO (maybe) -- this skipping of merged graphs ignores
+                # vertex colourings.
+                pos := Position(state!.raw_graphs, f.graph);
+                if pos = fail then
+                    Add(state!.raw_graphs, f.graph);
+                    if PS_Points(state!.ps) < DigraphNrVertices(f.graph) then
+                        g := _GB.ShiftGraph(state!.ps, f, state, tracer);
+                        if g = false then
+                            # Refining extra colours of new graph failed
+                            return false;
+                        fi;
+                    else
+                        g := f.graph;
+                    fi;
+                    Add(state!.graphs, g);
+                else
+                    if not AddEvent(tracer, rec(type := "SkipGraph", pos := pos)) then
+                        Info(InfoGB, 1, "Failed graph merge");
+                        return false;
+                    fi;
+                fi;
+            fi;
         fi;
     od;
     return true;
