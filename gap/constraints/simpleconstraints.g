@@ -62,6 +62,8 @@ fillOrbits := function(pointlist)
 
     r := rec(
         name := "InGroup-GB",
+        image := {p} -> RightCoset(group, p),
+        result := {} -> RightCoset(group, perm),
         check := {p} -> p in RightCoset(group, perm),
         refine := rec(
             rBaseFinished := function(getRBase)
