@@ -43,7 +43,7 @@ _GB.ShiftGraph := function(ps, f, state, tracer)
 
     if IsBound(f.vertlabels) then
         # Split the new cells by vertex colour (only worry about the new vertices here)
-        if not PS_SplitCellByFunction(state!.ps, tracer, new_cell, {x} -> f.vertlabels(x-shift_size)) then
+        if not PS_SplitCellByFunction(state!.ps, tracer, new_cell, {x} -> f.vertlabels[x-shift_size]) then
             return false;
         fi;
     fi;
@@ -78,7 +78,7 @@ InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
             if IsBound(f.vertlabels) then
                 # Note that this only covers the 'basic' vertices, any extended ones
                 # are handled later in 'ShiftGraph'
-                if not PS_SplitCellsByFunction(state!.ps, tracer, f.vertlabels) then
+                if not PS_SplitCellsByFunction(state!.ps, tracer, {x} -> f.vertlabels[x]) then
                     Info(InfoGB, 1, "Trace violation (vertex colouring)");
                     return false;
                 fi;
