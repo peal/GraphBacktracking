@@ -71,10 +71,10 @@ fillOrbits := function(pointlist)
             end,
 
             initialise := function(ps, buildingRBase)
-                return r!.refine.changed(ps, buildingRBase);
+                return r!.refine.fixed(ps, buildingRBase);
             end,
 
-            changed := function(ps, buildingRBase)
+            fixed := function(ps, buildingRBase)
                 local fixedpoints, points, fixedps, fixedrbase, p, graphs;
                 if buildingRBase then
                     fixedpoints := PS_FixedPoints(ps);
