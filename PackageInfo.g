@@ -74,8 +74,11 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">= 4.9",
-  NeededOtherPackages := [ ["BacktrackKit", ">= 0.3",], ["digraphs", ">= 1.0.0"] ],
+  GAP := ">= 4.11",
+  NeededOtherPackages := [
+                           ["BacktrackKit", ">=0.3.1"],
+                           ["digraphs", ">=1.1.1"]
+                         ],
   SuggestedOtherPackages := [ ],
   ExternalConditions := [ ],
 ),
@@ -87,5 +90,3 @@ TestFile := "tst/testall.g",
 #Keywords := [ "TODO" ],
 
 ));
-
-

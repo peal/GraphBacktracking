@@ -1,3 +1,6 @@
+[![Build Status](https://github.com/peal/GraphBacktracking/workflows/CI/badge.svg?branch=master)](https://github.com/peal/GraphBacktracking/actions?query=workflow%3ACI+branch%3Amaster)
+[![Code Coverage](https://codecov.io/github/peal/GraphBacktracking/coverage.svg?branch=master&token=)](https://codecov.io/gh/peal/GraphBacktracking)
+
 # The GAP package GraphBacktracking
 
 TODO: add a description of your package; perhaps also instructions how how to
