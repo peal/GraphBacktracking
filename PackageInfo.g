@@ -77,7 +77,8 @@ Dependencies := rec(
   GAP := ">= 4.11",
   NeededOtherPackages := [
                            ["BacktrackKit", ">=0.3.1"],
-                           ["digraphs", ">=1.1.1"]
+                           ["digraphs", ">=1.1.1"],
+                           ["images", ">= 1.3.0"]
                          ],
   SuggestedOtherPackages := [ ],
   ExternalConditions := [ ],
