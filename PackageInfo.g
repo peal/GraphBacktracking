@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "GraphBacktracking",
 Subtitle := "Super Secret Awesome Searching",
-Version := "0.3.0",
-Date := "07/11/2019", # dd/mm/yyyy format
+Version := "0.4.0",
+Date := "05/05/2021", # dd/mm/yyyy format
 
 Persons := [
   rec(
@@ -76,7 +76,7 @@ PackageDoc := rec(
 Dependencies := rec(
   GAP := ">= 4.11",
   NeededOtherPackages := [
-                           ["BacktrackKit", ">=0.3.1"],
+                           ["BacktrackKit", ">=0.4.0"],
                            ["digraphs", ">=1.1.1"],
                            ["images", ">= 1.3.0"]
                          ],
