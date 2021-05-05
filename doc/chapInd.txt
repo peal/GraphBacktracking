@@ -6,7 +6,6 @@
   [2XGB_MakeEquitableNone[102X, for IsPartitionStack, IsTracer, IsList 1.1-1 
   [2XGB_MakeEquitableStrong[102X, for IsPartitionStack, IsTracer, IsList 1.1-3 
   [2XGB_MakeEquitableWeak[102X, for IsPartitionStack, IsTracer, IsList 1.1-2 
-  [2XInfoGB[102X 2.1-1 
   
   
   -------------------------------------------------------

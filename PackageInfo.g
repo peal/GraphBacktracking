@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "GraphBacktracking",
 Subtitle := "Super Secret Awesome Searching",
-Version := "0.3.0",
-Date := "07/11/2019", # dd/mm/yyyy format
+Version := "0.4.0",
+Date := "05/05/2021", # dd/mm/yyyy format
 
 Persons := [
   rec(
@@ -31,15 +31,10 @@ Persons := [
   rec(
     IsAuthor := true,
     IsMaintainer := true,
-    FirstNames := "Wilf",
+    FirstNames := "Wilf A.",
     LastName := "Wilson",
-    WWWHome := "http://wilf.me",
+    WWWHome := "https://wilf.me",
     Email := "gap@wilf-wilson.net",
-    PostalAddress := Concatenation(["Theodor-Lieser-Straße 5, ",
-                                    "06120 Halle (Saale), ",
-                                    "Germany"]),
-    Place := "Halle (Saale), Germany",
-    Institution := "University of Halle-Wittenberg",
   ),
 ],
 
@@ -79,8 +74,12 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">= 4.9",
-  NeededOtherPackages := [ ["BacktrackKit", ">= 0.3",], ["digraphs", ">= 1.0.0"] ],
+  GAP := ">= 4.11",
+  NeededOtherPackages := [
+                           ["BacktrackKit", ">=0.4.0"],
+                           ["digraphs", ">=1.1.1"],
+                           ["images", ">= 1.3.0"]
+                         ],
   SuggestedOtherPackages := [ ],
   ExternalConditions := [ ],
 ),
@@ -92,5 +91,3 @@ TestFile := "tst/testall.g",
 #Keywords := [ "TODO" ],
 
 ));
-
-
