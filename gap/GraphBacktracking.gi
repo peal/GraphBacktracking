@@ -75,6 +75,9 @@ InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
                 return false;
             fi;
         else
+            if not IsRecord(f) then
+                ErrorNoReturn("Refiner must be a function or record: ", filters);
+            fi;
             if IsBound(f.vertlabels) then
                 # Note that this only covers the 'basic' vertices, any extended ones
                 # are handled later in 'ShiftGraph'
