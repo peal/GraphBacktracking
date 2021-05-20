@@ -25,7 +25,7 @@ GB_Con.NormaliserSimple := function(n, group)
         Append(graph, orbs);
         Append(cols, List(orbs, {x} -> Length(x)));
         Info(InfoGB, 2, "Made graph: ", Digraph(graph));
-        return rec( graph := Digraph(graph), vertlabels := cols);
+        return [rec( graph := Digraph(graph), vertlabels := cols)];
     end;
 
     r := rec(
@@ -35,12 +35,17 @@ GB_Con.NormaliserSimple := function(n, group)
         check := {p} -> group=group^p,
         refine := rec(
             initialise := function(ps, buildingRBase)
-                return r!.refine.changed(ps, buildingRBase);
+                # Set 'seenDepth to -1 at the start. Note we always start searching at 'seenDepth + 1' which will be 0
+                r!.btdata := rec(seenDepth := -1);
+                return r!.refine.fixed(ps, buildingRBase);
             end,
-            changed := function(ps, buildingRBase)
-                local fixedpoints;
+            fixed := function(ps, buildingRBase)
+                local fixedpoints, result;
                 fixedpoints := PS_FixedPoints(ps);
-                return getOrbits(fixedpoints);
+                Assert(2, r!.btdata.seenDepth <= Length(fixedpoints));
+                result := Concatenation(List([r!.btdata.seenDepth + 1..Length(fixedpoints)], x -> getOrbits(fixedpoints{[1..x]})));
+                r!.btdata.seenDepth := Length(fixedpoints);
+                return result;
             end)
         );
         return Objectify(GBRefinerType, r);
@@ -53,10 +58,19 @@ GB_Con.NormaliserSimple2 := function(n, group)
     getOrbits := function(pointlist)
         local G,orbs,graph,cols, i, outlist;
         G := group;
+        # Stop if the list is empty
+        if IsEmpty(pointlist) then
+            return [];
+        fi;
         pointlist := Reversed(pointlist);
+        # if the first point isn't moved, then we would just be repeating earlier work
+        if ForAll(GeneratorsOfGroup(G), p -> pointlist[1]^p = pointlist[1]) then
+            return [];
+        fi;
+
         outlist := [];
         for i in pointlist do
-            if ForAny(GeneratorsOfGroup(G), p -> i^p <> p) then
+            if ForAny(GeneratorsOfGroup(G), p -> i^p <> i) then
                 G := Stabilizer(G, i);
                 orbs := Orbits(G, [1..n]);        
                 orbs := Filtered(orbs, o -> Length(o)>1);
@@ -75,18 +89,23 @@ GB_Con.NormaliserSimple2 := function(n, group)
     end;
 
     r := rec(
-        name := "NormaliserSimple",
+        name := "NormaliserSimpleLeon",
         image := {p} -> group^p,
         result := {} -> group,
         check := {p} -> group=group^p,
         refine := rec(
             initialise := function(ps, buildingRBase)
-                return r!.refine.changed(ps, buildingRBase);
+                # Set 'seenDepth to -1 at the start. Note we always start searching at 'seenDepth + 1' which will be 0
+                r!.btdata := rec(seenDepth := -1);
+                return r!.refine.fixed(ps, buildingRBase);
             end,
-            changed := function(ps, buildingRBase)
-                local fixedpoints;
+            fixed := function(ps, buildingRBase)
+                local fixedpoints, result;
                 fixedpoints := PS_FixedPoints(ps);
-                return getOrbits(fixedpoints);
+                Assert(2, r!.btdata.seenDepth <= Length(fixedpoints));
+                result := Concatenation(List([r!.btdata.seenDepth + 1..Length(fixedpoints)], x -> getOrbits(fixedpoints{[1..x]})));
+                r!.btdata.seenDepth := Length(fixedpoints);
+                return result;
             end)
         );
         return Objectify(GBRefinerType, r);
