@@ -4,7 +4,7 @@ GB_Con.NormaliserSimple := function(n, group)
 
     getOrbits := function(pointlist)
         local G,orbs,graph,cols, orb;
-
+        Info(InfoGB, 1, "Normaliser for pointlist", pointlist);
         G := Stabilizer(group, pointlist, OnTuples);
 
         orbs := Orbits(G, [1..n]);
@@ -30,6 +30,7 @@ GB_Con.NormaliserSimple := function(n, group)
 
     r := rec(
         name := "NormaliserSimple",
+        largest_required_point := LargestMovedPoint(group),
         image := {p} -> group^p,
         result := {} -> group,
         check := {p} -> group=group^p,
@@ -90,6 +91,7 @@ GB_Con.NormaliserSimple2 := function(n, group)
 
     r := rec(
         name := "NormaliserSimpleLeon",
+        largest_required_point := LargestMovedPoint(group),
         image := {p} -> group^p,
         result := {} -> group,
         check := {p} -> group=group^p,

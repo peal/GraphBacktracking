@@ -62,6 +62,8 @@ fillOrbits := function(pointlist)
 
     r := rec(
         name := "InGroup-GB",
+        largest_required_point := Maximum(LargestMovedPoint(group), LargestMovedPoint(perm)),
+        largest_moved_point :=  Maximum(LargestMovedPoint(group), LargestMovedPoint(perm)),
         image := {p} -> RightCoset(group, p),
         result := {} -> RightCoset(group, perm),
         check := {p} -> p in RightCoset(group, perm),
