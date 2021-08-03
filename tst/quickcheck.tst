@@ -19,6 +19,6 @@ gap> QC_CheckEqual([IsPermGroup, QC_SetOf(IsPosInt)], {g,s} -> Stabilizer(g,s,On
 >  local maxpnt;
 >  maxpnt := Maximum(LargestMovedPoint(g), Maximum(s));
 >  return GB_SimpleSearch(PartitionStack(maxpnt), 
->           [GB_Con.InGroup(maxpnt, g), BTKit_Con.SetStab(maxpnt, s)]);
+>           [GB_Con.InGroup(maxpnt, g), BTKit_Con.SetStab(s)]);
 >  end);
 true

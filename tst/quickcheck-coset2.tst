@@ -8,9 +8,9 @@ gap> List([GB_MakeEquitableNone, GB_MakeEquitableWeak, GB_MakeEquitableStrong, G
 >   rc1 := RightCoset(g1,p1);
 >   m := Maximum(Flat([lmp(g1,p1), l1, l2]));
 >   p := GB_SimpleSinglePermSearch(PartitionStack(m),
->          [GB_Con.InCoset(m, g1, p1), BTKit_Con.SetTransporter(m, l1, l2)],rec(consolidator := consol));
+>          [GB_Con.InCoset(m, g1, p1), BTKit_Con.SetTransporter(l1, l2)],rec(consolidator := consol));
 >   check := GB_CheckInitialCoset(PartitionStack(m),
->          [GB_Con.InCoset(m, g1, p1), BTKit_Con.SetTransporter(m, l1, l2)]);
+>          [GB_Con.InCoset(m, g1, p1), BTKit_Con.SetTransporter(l1, l2)]);
 >   if p <> fail then
 >     if OnSets(l1, p) <> l2 or not (p in rc1) then
 >       return StringFormatted("Got false answer: {},{},{},{},{}",g1,p1,l1,l2,p);
