@@ -7,7 +7,7 @@ gap> QC_Check([IsPermGroup, IsPermGroup, ],
 >   inter := Intersection(g1,g2);
 >   m := lmp(g1,g2);
 >   g := GB_SimpleSearch(PartitionStack(m),
->          [GB_Con.InGroupSimple(m, g1), GB_Con.InGroupSimple(m, g2)]);
+>          [GB_Con.InGroupSimple(g1), GB_Con.InGroupSimple(g2)]);
 >  if g <> inter then
 >    return StringFormatted("Expected {} intersection {} = {}, got {}",g1,g2,inter,g);
 >  fi;

@@ -1,8 +1,8 @@
-GB_Con.InCosetSimple := function(n, group, perm)
+GB_Con.InCosetSimple := function(group, perm)
     local orbList,getStructures, r, invperm,minperm;
     invperm := perm^-1;
 
-    getStructures := function(pointlist)
+    getStructures := function(pointlist, n)
         local orbs, array, i, j, graphs;
 
         orbs := StabTreeStabilizerOrbits(group, pointlist, [1..n]);
@@ -41,7 +41,7 @@ GB_Con.InCosetSimple := function(n, group, perm)
                 fi;
 
                 fixedpoints := OnTuples(fixedpoints, p);
-                ret := getStructures(fixedpoints);
+                ret := getStructures(fixedpoints, PS_Points(ps));
 
                 return Concatenation([{x} -> ret.points[x^p]],
                     List(ret.graphs, {g} -> rec(graph := OnDigraphs(g, p^-1))));
@@ -50,4 +50,4 @@ GB_Con.InCosetSimple := function(n, group, perm)
         return Objectify(GBRefinerType, r);
     end;
 
-GB_Con.InGroupSimple := {n, group} -> GB_Con.InCosetSimple(n, group, ());
+GB_Con.InGroupSimple := {group} -> GB_Con.InCosetSimple(group, ());

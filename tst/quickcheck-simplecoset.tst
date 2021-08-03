@@ -9,7 +9,7 @@ gap> QC_Check([IsPermGroup, IsPerm, IsPermGroup, IsPerm],
 >   inter := Intersection(rc1,rc2);
 >   m := lmp(g1,g2,p1,p2);
 >   p := GB_SimpleSinglePermSearch(PartitionStack(m),
->          [GB_Con.InCosetSimple(m, g1, p1), GB_Con.InCosetSimple(m, g2, p2)]);
+>          [GB_Con.InCosetSimple(g1, p1), GB_Con.InCosetSimple(g2, p2)]);
 >  if inter = [] then
 >    if p <> fail then return StringFormatted("Expected nothing, got {}",p); fi;
 >  else

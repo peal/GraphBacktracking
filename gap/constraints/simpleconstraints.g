@@ -23,10 +23,10 @@ InstallMethod(RestoreState, [IsGBRefiner, IsObject],
         fi;
     end);
 
-GB_Con.InCoset := function(n, group, perm)
+GB_Con.InCoset := function(group, perm)
     local orbList,fillOrbits, fillOrbitals, orbMap, orbitalMap, pointMap, r, invperm;
     invperm := perm^-1;
-fillOrbits := function(pointlist)
+fillOrbits := function(pointlist, n)
         local orbs, array, i, j;
         # caching
         if IsBound(pointMap[pointlist]) then
@@ -45,7 +45,7 @@ fillOrbits := function(pointlist)
         return array;
     end;
 
-    fillOrbitals := function(pointlist)
+    fillOrbitals := function(pointlist, n)
         local orbs, array, i, j;
         if IsBound(orbitalMap[pointlist]) then
             return orbitalMap[pointlist];
@@ -80,8 +80,8 @@ fillOrbits := function(pointlist)
                 local fixedpoints, points, fixedps, fixedrbase, p, graphs;
                 if buildingRBase then
                     fixedpoints := PS_FixedPoints(ps);
-                    points := fillOrbits(fixedpoints);
-                    graphs := fillOrbitals(fixedpoints);
+                    points := fillOrbits(fixedpoints, PS_Points(ps));
+                    graphs := fillOrbitals(fixedpoints, PS_Points(ps));
                     Info(InfoGB, 5, "Building RBase:", points);
                     return Concatenation([{x} -> points[x]]
                                         ,List(graphs, g -> rec(graph := g)));
@@ -113,7 +113,7 @@ fillOrbits := function(pointlist)
                         return Concatenation([{x} -> points[x^p]],
                          List(graphs, {g} -> rec(graph := OnDigraphs(g, p^-1))));
                     else
-                        Info(InfoGB, 5, fixedps, fixedrbase, List([1..n], i -> points[i^(p*invperm)]));
+                        Info(InfoGB, 5, fixedps, fixedrbase, List([1..PS_Points(ps)], i -> points[i^(p*invperm)]));
                         return Concatenation([{x} -> points[x^(invperm*p)]],
                           List(graphs, {g} -> rec(graph := OnDigraphs(g, (invperm*p)^-1))));
                     fi;
@@ -123,4 +123,4 @@ fillOrbits := function(pointlist)
         return Objectify(GBRefinerType, r);
     end;
 
-GB_Con.InGroup := {n, group} -> GB_Con.InCoset(n, group, ());
+GB_Con.InGroup := {group} -> GB_Con.InCoset(group, ());

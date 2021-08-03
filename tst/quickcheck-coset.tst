@@ -8,7 +8,7 @@ gap> List([GB_MakeEquitableNone, GB_MakeEquitableWeak, GB_MakeEquitableStrong, G
 >   rc1 := RightCoset(g1,p1);
 >   m := lmp(g1,p1);
 >   p := GB_SimpleAllPermSearch(PartitionStack(m),
->          [GB_Con.InCoset(m, g1, p1)],rec(consolidator := consol));
+>          [GB_Con.InCoset(g1, p1)],rec(consolidator := consol));
 >   if Set(rc1) <> Set(p) then
 >    return StringFormatted("Expected {}, got {}", Set(rc1), Set(p));
 >   fi;
@@ -24,7 +24,7 @@ gap> List([GB_MakeEquitableNone, GB_MakeEquitableWeak, GB_MakeEquitableStrong, G
 >   inter := Intersection(rc1,rc2);
 >   m := lmp(g1,g2,p1,p2);
 >   p := GB_SimpleSinglePermSearch(PartitionStack(m),
->          [GB_Con.InCoset(m, g1, p1), GB_Con.InCoset(m, g2, p2)],rec(consolidator := consol));
+>          [GB_Con.InCoset(g1, p1), GB_Con.InCoset(g2, p2)],rec(consolidator := consol));
 >  if inter = [] then
 >    if p <> fail then return StringFormatted("Expected nothing, got {}",p); fi;
 >  else

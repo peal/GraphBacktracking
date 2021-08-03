@@ -1,8 +1,8 @@
 
-GB_Con.NormaliserSimple := function(n, group)
+GB_Con.NormaliserSimple := function(group)
     local orbList,getOrbits, orbMap, pointMap, r, invperm,minperm;
 
-    getOrbits := function(pointlist)
+    getOrbits := function(pointlist, n)
         local G,orbs,graph,cols, orb;
         Info(InfoGB, 1, "Normaliser for pointlist", pointlist);
         G := Stabilizer(group, pointlist, OnTuples);
@@ -44,7 +44,7 @@ GB_Con.NormaliserSimple := function(n, group)
                 local fixedpoints, result;
                 fixedpoints := PS_FixedPoints(ps);
                 Assert(2, r!.btdata.seenDepth <= Length(fixedpoints));
-                result := Concatenation(List([r!.btdata.seenDepth + 1..Length(fixedpoints)], x -> getOrbits(fixedpoints{[1..x]})));
+                result := Concatenation(List([r!.btdata.seenDepth + 1..Length(fixedpoints)], x -> getOrbits(fixedpoints{[1..x]}, PS_Points(ps))));
                 r!.btdata.seenDepth := Length(fixedpoints);
                 return result;
             end)
@@ -53,10 +53,10 @@ GB_Con.NormaliserSimple := function(n, group)
     end;
 
 # A refiner based on Leon's Normaliser refiner
-GB_Con.NormaliserSimple2 := function(n, group)
+GB_Con.NormaliserSimple2 := function(group)
     local orbList,getOrbits, orbMap, pointMap, r, invperm,minperm;
 
-    getOrbits := function(pointlist)
+    getOrbits := function(pointlist, n)
         local G,orbs,graph,cols, i, outlist;
         G := group;
         # Stop if the list is empty
@@ -105,7 +105,7 @@ GB_Con.NormaliserSimple2 := function(n, group)
                 local fixedpoints, result;
                 fixedpoints := PS_FixedPoints(ps);
                 Assert(2, r!.btdata.seenDepth <= Length(fixedpoints));
-                result := Concatenation(List([r!.btdata.seenDepth + 1..Length(fixedpoints)], x -> getOrbits(fixedpoints{[1..x]})));
+                result := Concatenation(List([r!.btdata.seenDepth + 1..Length(fixedpoints)], x -> getOrbits(fixedpoints{[1..x]}, PS_Points(ps))));
                 r!.btdata.seenDepth := Length(fixedpoints);
                 return result;
             end)
