@@ -1,4 +1,5 @@
 gap> LoadPackage("quickcheck", false);;
+gap> LoadPackage("graphbacktracking", false);;
 gap> lmp := {l...} -> Maximum(1,Maximum(List(l, LargestMovedPoint)));;
 gap> QC_CheckEqual([IsPermGroup, IsPermGroup], Intersection, 
 > {g1,g2} -> GB_SimpleSearch(PartitionStack(lmp(g1,g2)), 
@@ -20,5 +21,13 @@ gap> QC_CheckEqual([IsPermGroup, QC_SetOf(IsPosInt)], {g,s} -> Stabilizer(g,s,On
 >  maxpnt := Maximum(LargestMovedPoint(g), Maximum(s));
 >  return GB_SimpleSearch(PartitionStack(maxpnt), 
 >           [GB_Con.InGroup(g), BTKit_Con.SetStab(s)]);
+>  end);
+true
+gap> QC_CheckEqual([IsPermGroup, IsPerm], {g,p} -> Stabilizer(g,p), 
+> function(g,p)
+>  local maxpnt;
+>  maxpnt := Maximum(LargestMovedPoint(g), LargestMovedPoint(p), 2);
+>  return GB_SimpleSearch(PartitionStack(maxpnt), 
+>           [GB_Con.InGroup(g), GB_Con.PermConjugacy(p,p)]);
 >  end);
 true
