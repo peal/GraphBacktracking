@@ -89,7 +89,7 @@ InstallMethod(ApplyFilters, [IsGBState, IsTracer, IsObject],
             if IsBound(f.graph) then
                 # TODO (maybe) -- this skipping of merged graphs ignores
                 # vertex colourings.
-                pos := Position(state!.raw_graphs, f.graph);
+                pos := fail; # This isn't valid for normalisers (and others): Position(state!.raw_graphs, f.graph);
                 if pos = fail then
                     Add(state!.raw_graphs, f.graph);
                     if PS_Points(state!.ps) < DigraphNrVertices(f.graph) then
