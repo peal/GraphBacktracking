@@ -52,9 +52,39 @@ GB_Con.NormaliserSimple := function(group)
         return Objectify(GBRefinerType, r);
     end;
 
-# A refiner based on Leon's Normaliser refiner
+# A refiner based on Leon's Normaliser refiner (with added block structures)
 GB_Con.GroupConjugacySimple2 := function(groupL, groupR)
-    local orbList,getOrbits, orbMap, pointMap, r, invperm,minperm;
+    local orbList,getOrbits, buildGraph, orbMap, pointMap, r, invperm,minperm;
+
+    buildGraph := function(G, n, outlist)
+        local orbs, graph, cols, blocks, b, parts, curlength;
+
+        orbs := Orbits(G, [1..n]);        
+        orbs := Filtered(orbs, o -> Length(o)>1);
+
+        if Length(orbs) = 1 then
+            blocks := RepresentativesMinimalBlocks(G, orbs[1]);
+            Info(InfoGB, 2, "Found blocks: ", blocks);
+            graph := ListWithIdenticalEntries(n, []);
+            for b in blocks do
+                parts := Orbit(G, Set(b), OnSets);
+                if Length(parts) > 1 then
+                    curlength := Length(graph);
+                    Append(graph, parts);
+                    Add(graph, [curlength+1..curlength+Length(parts)]);
+                fi;
+            od;
+            Info(InfoGB, 2, "Made block system graph: ", graph);
+            Add(outlist, rec(graph := Digraph(graph)));
+        else
+            graph := ListWithIdenticalEntries(n, []);
+            cols := ListWithIdenticalEntries(n, 0);
+            Append(graph, orbs);
+            Append(cols, List(orbs, {x} -> Length(x)));
+            Info(InfoGB, 2, "Made graph: ", graph);
+            Add(outlist, rec( graph := Digraph(graph), vertlabels := cols));
+        fi;
+    end;
 
     getOrbits := function(pointlist, n, group)
         local G,orbs,graph,cols, i, outlist;
@@ -73,17 +103,7 @@ GB_Con.GroupConjugacySimple2 := function(groupL, groupR)
         for i in pointlist do
             if ForAny(GeneratorsOfGroup(G), p -> i^p <> i) then
                 G := Stabilizer(G, i);
-                orbs := Orbits(G, [1..n]);        
-                orbs := Filtered(orbs, o -> Length(o)>1);
-
-                if Length(orbs) > 1 then
-                    graph := ListWithIdenticalEntries(n, []);
-                    cols := ListWithIdenticalEntries(n, 0);
-                    Append(graph, orbs);
-                    Append(cols, List(orbs, {x} -> Length(x)));
-                    Info(InfoGB, 2, "Made graph: ", Digraph(graph));
-                    Add(outlist, rec( graph := Digraph(graph), vertlabels := cols));
-                fi;
+                buildGraph(G, n, outlist);
             fi;
         od;
         return outlist;
@@ -111,6 +131,12 @@ GB_Con.GroupConjugacySimple2 := function(groupL, groupR)
                 fixedpoints := PS_FixedPoints(ps);
                 Assert(2, r!.btdata.seenDepth <= Length(fixedpoints));
                 result := Concatenation(List([r!.btdata.seenDepth + 1..Length(fixedpoints)], x -> getOrbits(fixedpoints{[1..x]}, PS_Points(ps), group)));
+                
+                # Handle first call
+                if r!.btdata.seenDepth = -1 then
+                    buildGraph(group, PS_Points(ps), result);
+                fi;
+
                 r!.btdata.seenDepth := Length(fixedpoints);
                 return result;
             end)
