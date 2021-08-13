@@ -53,10 +53,10 @@ GB_Con.NormaliserSimple := function(group)
     end;
 
 # A refiner based on Leon's Normaliser refiner
-GB_Con.NormaliserSimple2 := function(group)
+GB_Con.GroupConjugacySimple2 := function(groupL, groupR)
     local orbList,getOrbits, orbMap, pointMap, r, invperm,minperm;
 
-    getOrbits := function(pointlist, n)
+    getOrbits := function(pointlist, n, group)
         local G,orbs,graph,cols, i, outlist;
         G := group;
         # Stop if the list is empty
@@ -91,10 +91,10 @@ GB_Con.NormaliserSimple2 := function(group)
 
     r := rec(
         name := "NormaliserSimpleLeon",
-        largest_required_point := LargestMovedPoint(group),
-        image := {p} -> group^p,
-        result := {} -> group,
-        check := {p} -> group=group^p,
+        largest_required_point := Maximum(LargestMovedPoint(groupL),LargestMovedPoint(groupR)),
+        image := {p} -> groupL^p,
+        result := {} -> groupR,
+        check := {p} -> groupR=groupL^p,
         refine := rec(
             initialise := function(ps, buildingRBase)
                 # Set 'seenDepth to -1 at the start. Note we always start searching at 'seenDepth + 1' which will be 0
@@ -102,13 +102,20 @@ GB_Con.NormaliserSimple2 := function(group)
                 return r!.refine.fixed(ps, buildingRBase);
             end,
             fixed := function(ps, buildingRBase)
-                local fixedpoints, result;
+                local fixedpoints, result, group;
+                if buildingRBase then
+                    group := groupL;
+                else
+                    group := groupR;
+                fi;
                 fixedpoints := PS_FixedPoints(ps);
                 Assert(2, r!.btdata.seenDepth <= Length(fixedpoints));
-                result := Concatenation(List([r!.btdata.seenDepth + 1..Length(fixedpoints)], x -> getOrbits(fixedpoints{[1..x]}, PS_Points(ps))));
+                result := Concatenation(List([r!.btdata.seenDepth + 1..Length(fixedpoints)], x -> getOrbits(fixedpoints{[1..x]}, PS_Points(ps), group)));
                 r!.btdata.seenDepth := Length(fixedpoints);
                 return result;
             end)
         );
         return Objectify(GBRefinerType, r);
     end;
+
+GB_Con.NormaliserSimple2 := {g} -> GB_Con.GroupConjugacySimple2(g,g);
