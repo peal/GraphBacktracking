@@ -20,7 +20,7 @@ GB_Con.InCosetSimple := function(group, perm)
     end;
 
     r := rec(
-        name := "InGroupSimple",
+        name := "InCosetSimple",
         largest_required_point := Maximum(LargestMovedPoint(group), LargestMovedPoint(perm)),
         largest_moved_point :=  Maximum(LargestMovedPoint(group), LargestMovedPoint(perm)),
         image := {p} -> RightCoset(group, p),
@@ -50,4 +50,9 @@ GB_Con.InCosetSimple := function(group, perm)
         return Objectify(GBRefinerType, r);
     end;
 
-GB_Con.InGroupSimple := {group} -> GB_Con.InCosetSimple(group, ());
+GB_Con.InGroupSimple := function(group)
+    local con;
+    con := GB_Con.InCosetSimple(group, ());
+    con!.name := "InGroupSimple";
+    return con;
+end;

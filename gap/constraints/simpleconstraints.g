@@ -61,7 +61,7 @@ fillOrbits := function(pointlist, n)
     orbitalMap := HashMap();
 
     r := rec(
-        name := "InGroup-GB",
+        name := "InCoset-GB",
         largest_required_point := Maximum(LargestMovedPoint(group), LargestMovedPoint(perm)),
         largest_moved_point :=  Maximum(LargestMovedPoint(group), LargestMovedPoint(perm)),
         image := {p} -> RightCoset(group, p),
@@ -123,4 +123,9 @@ fillOrbits := function(pointlist, n)
         return Objectify(GBRefinerType, r);
     end;
 
-GB_Con.InGroup := {group} -> GB_Con.InCoset(group, ());
+GB_Con.InGroup := function(group)
+    local con;
+    con := GB_Con.InCoset(group, ());
+    con!.name := "InGroup-GB";
+    return con;
+end;
