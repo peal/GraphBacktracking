@@ -23,8 +23,6 @@ GB_Con.PermConjugacy := function(permL, permR)
     return Objectify(GBRefinerType,rec(
         name := "GB_PermConjugacy",
         largest_required_point := Maximum(LargestMovedPoint(permL), LargestMovedPoint(permR), 1),
-        image := {p} -> permL^p,
-        result := {} -> permR,
         constraint := Constraint.Transport(permL, permR, OnPoints),
         refine := rec(
             initialise := function(ps, buildingRbase)
