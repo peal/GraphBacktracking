@@ -31,9 +31,6 @@ GB_Con.NormaliserSimple := function(group)
     r := rec(
         name := "NormaliserSimple",
         largest_required_point := LargestMovedPoint(group),
-        image := {p} -> group^p,
-        result := {} -> group,
-        check := {p} -> group=group^p,
         constraint := Constraint.Stabilise(group, OnPoints),
         refine := rec(
             initialise := function(ps, buildingRBase)
@@ -113,9 +110,6 @@ GB_Con.GroupConjugacySimple2 := function(groupL, groupR)
     r := rec(
         name := "NormaliserSimpleLeon",
         largest_required_point := Maximum(LargestMovedPoint(groupL),LargestMovedPoint(groupR)),
-        image := {p} -> groupL^p,
-        result := {} -> groupR,
-        check := {p} -> groupR=groupL^p,
         constraint := Constraint.Transport(groupL, groupR, OnPoints),
         refine := rec(
             initialise := function(ps, buildingRBase)
