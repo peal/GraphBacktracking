@@ -34,6 +34,7 @@ GB_Con.NormaliserSimple := function(group)
         image := {p} -> group^p,
         result := {} -> group,
         check := {p} -> group=group^p,
+        constraint := Constraint.Stabilise(group, OnPoints),
         refine := rec(
             initialise := function(ps, buildingRBase)
                 # Set 'seenDepth to -1 at the start. Note we always start searching at 'seenDepth + 1' which will be 0
@@ -115,6 +116,7 @@ GB_Con.GroupConjugacySimple2 := function(groupL, groupR)
         image := {p} -> groupL^p,
         result := {} -> groupR,
         check := {p} -> groupR=groupL^p,
+        constraint := Constraint.Transport(groupL, groupR, OnPoints),
         refine := rec(
             initialise := function(ps, buildingRBase)
                 # Set 'seenDepth to -1 at the start. Note we always start searching at 'seenDepth + 1' which will be 0
