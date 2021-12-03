@@ -1,4 +1,8 @@
-
+#
+# GraphBacktracking
+#
+# Implementations
+#
 
 DeclareGlobalFunction( "GB_SimpleSearch" );
 
