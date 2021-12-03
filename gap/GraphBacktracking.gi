@@ -4,7 +4,6 @@
 # Implementations
 #
 
-
 DeclareRepresentation("IsGBState", IsBacktrackableState and IsBTKitState, []);
 BindGlobal("GBStateType", NewType(BacktrackableStateFamily,
                                        IsGBState));
