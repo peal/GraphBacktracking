@@ -25,8 +25,8 @@ GB_Con.PermConjugacy := function(permL, permR)
         largest_required_point := Maximum(LargestMovedPoint(permL), LargestMovedPoint(permR), 1),
         constraint := Constraint.Transport(permL, permR, OnPoints),
         refine := rec(
-            initialise := function(ps, buildingRbase)
-                if buildingRbase then
+            initialise := function(ps, buildingRBase)
+                if buildingRBase then
                     return rec(graph := permToGraph(permL));
                 else
                     return rec(graph := permToGraph(permR));
