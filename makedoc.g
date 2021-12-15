@@ -1,5 +1,5 @@
 #
-# GraphBacktracking: Super Secret Awesome Searching
+# GraphBacktracking: A simple but slow implementation of graph backtracking
 #
 # This file is a script which compiles the package manual.
 #

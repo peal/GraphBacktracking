@@ -1,5 +1,5 @@
 #
-# GraphBacktracking: Super Secret Awesome Searching
+# GraphBacktracking: A simple but slow implementation of graph backtracking
 #
 # Reading the implementation part of the package.
 #
