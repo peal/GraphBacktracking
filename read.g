@@ -14,3 +14,4 @@ ReadPackage( "GraphBacktracking", "gap/constraints/simpleconstraints.g");
 ReadPackage( "GraphBacktracking", "gap/constraints/normaliser.g");
 ReadPackage( "GraphBacktracking", "gap/constraints/canonicalconstraints.g");
 ReadPackage( "GraphBacktracking", "gap/constraints/conjugacy.g");
+ReadPackage( "GraphBacktracking", "gap/constraints/digraphs.g");

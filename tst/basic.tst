@@ -37,3 +37,21 @@ gap> IsTrivial(GB_SimpleSearch(PartitionStack(10),
 >                              [GB_Con.InGroup(PrimitiveGroup(10, 1)),
 >                               GB_Con.InGroup(PrimitiveGroup(10, 3))]));
 true
+
+# Set of digraphs: G = TransitiveGroup(6, 4) and o = OrbitalGraphs(G)
+# Warning: currently too slow
+#gap> G := Group([(1,2,3)(4,5,6), (1,4)(2,5)]);
+#gap> o := Set(["&ECA@_OG", "&EQHcQHc", "&EHcQHcQ"], DigraphFromDigraph6String);
+#gap> GB_SimpleSearch(PartitionStack(6), [GB_Con.SetDigraphs(o, o)])
+#> = Normaliser(SymmetricGroup(6), G);
+#true
+#
+# Set of digraphs: cycle digraph on 4 vertices and its reverse
+gap> o := Set([CycleDigraph(4), DigraphReverse(CycleDigraph(4))]);;
+gap> G := Group([(2,4), (1,2)(3,4)]);;
+gap> GB_SimpleSearch(PartitionStack(4), [GB_Con.SetDigraphs(o, o)]) = G;
+true
+gap> p := OnSetsDigraphs(o, (3,4));;
+gap> GB_SimpleSinglePermSearch(PartitionStack(4), [GB_Con.SetDigraphs(o, p)])
+> * (3,4) in G;
+true
