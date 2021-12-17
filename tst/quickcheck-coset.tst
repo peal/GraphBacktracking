@@ -1,5 +1,7 @@
 gap> LoadPackage("quickcheck", false);;
 gap> LoadPackage("graphbacktrack", false);;
+gap> conf := QC_GetConfig();;
+gap> QC_SetConfig(rec(limit := 6));;
 gap> lmp := {l...} -> Maximum(1,Maximum(List(l, LargestMovedPoint)));;
 gap> List([GB_MakeEquitableNone, GB_MakeEquitableWeak, GB_MakeEquitableStrong, GB_MakeEquitableFull], consol ->
 > QC_Check([IsPermGroup, IsPerm], 
@@ -33,3 +35,4 @@ gap> List([GB_MakeEquitableNone, GB_MakeEquitableWeak, GB_MakeEquitableStrong, G
 >  return true;
 > end));
 [ true, true, true, true ]
+gap> QC_SetConfig(conf);;
