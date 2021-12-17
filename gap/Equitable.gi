@@ -58,7 +58,7 @@ InstallMethod(GB_MakeEquitableStrong, [IsPartitionStack, IsTracer, IsList],
                 od;
             od;
             hmsetset := List([1..PS_ExtendedPoints(ps)], {x} -> SortedList(List(Values(hm[x]), SortedList)) );
-            if not PS_SplitCellsByFunction(ps, tracer, {x} -> hmsetset[x]) then
+            if not PS_ExtendedSplitCellsByFunction(ps, tracer, {x} -> hmsetset[x]) then
                 Info(InfoGB, 2, "EquitableStrong trace violation");
                 return false;
             fi;
