@@ -7,7 +7,7 @@ gap> QC_Check([IsPermGroup, IsPermGroup],
 >   m := lmp(g1,g2);
 >   norm1 := Normaliser(g1, g2);
 >   norm2 := GB_SimpleSearch(PartitionStack(m),
->          [BTKit_Con.InGroup(g1), GB_Con.NormaliserSimple2(g2)]);
+>          [BTKit_Refiner.InGroup(g1), GB_Con.NormaliserSimple2(g2)]);
 >  if norm1 <> norm2 then
 >    return StringFormatted("Expected {}, got {}, from {},{}",norm1,norm2,g1,g2);
 >  fi;

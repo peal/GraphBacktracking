@@ -12,14 +12,14 @@ gap> Group((1,2)(3,4)) =
 > GB_SimpleSearch(ps4, [GB_Con.InGroup(Group((1,2)(3,4)))]);
 true
 gap> Set(GB_SimpleSearch(ps6, [GB_Con.InGroup(AlternatingGroup(6)),
->                              BTKit_Con.SetStab([2, 4, 6]),
->                              BTKit_Con.TupleStab([1, 2])]));
+>                              BTKit_Refiner.SetStab([2, 4, 6]),
+>                              BTKit_Refiner.TupleStab([1, 2])]));
 [ (), (3,5)(4,6) ]
 gap> IsTrivial(GB_SimpleSearch(ps6, [GB_Con.InGroup(Group((1,2,3,4,5,6))),
 >                                    GB_Con.InGroup(Group((1,2,4,3,5,6)))]));
 true
 gap> DirectProduct(SymmetricGroup(3), SymmetricGroup(3)) =
->  GB_SimpleSearch(PartitionStack(6), [BTKit_Con.SetStab([1 .. 3])]);
+>  GB_SimpleSearch(PartitionStack(6), [BTKit_Refiner.SetStab([1 .. 3])]);
 true
 
 # Trivial intersection of two 'disjoint' C4 x C4 x C4 groups with equal orbits
