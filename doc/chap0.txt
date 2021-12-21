@@ -3,13 +3,13 @@
                               [1X GraphBacktracking [101X
   
   
-                        [1X Super Secret Awesome Searching [101X
+            [1X A simple but slow implementation of graph backtracking [101X
   
   
-                                     0.5.1
+                                     0.5.2
   
   
-                                3 December 2021
+                                21 December 2021
   
   
                              Christopher Jefferson

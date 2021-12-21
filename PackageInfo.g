@@ -1,5 +1,5 @@
 #
-# GraphBacktracking: Super Secret Awesome Searching
+# GraphBacktracking: A simple but slow implementation of graph backtracking
 #
 # This file contains package meta data. For additional information on
 # the meaning and correct usage of these fields, please consult the
@@ -9,9 +9,9 @@
 SetPackageInfo( rec(
 
 PackageName := "GraphBacktracking",
-Subtitle := "Super Secret Awesome Searching",
-Version := "0.5.1",
-Date := "03/12/2021", # dd/mm/yyyy format
+Subtitle := "A simple but slow implementation of graph backtracking",
+Version := "0.5.2",
+Date := "21/12/2021", # dd/mm/yyyy format
 
 Persons := [
   rec(
@@ -70,13 +70,13 @@ PackageDoc := rec(
   HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
-  LongTitle := "Super Secret Awesome Searching",
+  LongTitle := ~.Subtitle,
 ),
 
 Dependencies := rec(
   GAP := ">= 4.11",
   NeededOtherPackages := [
-                           ["BacktrackKit", ">=0.6.0"],
+                           ["BacktrackKit", ">=0.6.1"],
                            ["digraphs", ">=1.1.1"],
                            ["images", ">= 1.3.0"]
                          ],
