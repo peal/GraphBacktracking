@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "GraphBacktracking",
 Subtitle := "A simple but slow implementation of graph backtracking",
-Version := "0.5.1",
-Date := "03/12/2021", # dd/mm/yyyy format
+Version := "0.5.2",
+Date := "21/12/2021", # dd/mm/yyyy format
 
 Persons := [
   rec(
@@ -76,7 +76,7 @@ PackageDoc := rec(
 Dependencies := rec(
   GAP := ">= 4.11",
   NeededOtherPackages := [
-                           ["BacktrackKit", ">=0.6.0"],
+                           ["BacktrackKit", ">=0.6.1"],
                            ["digraphs", ">=1.1.1"],
                            ["images", ">= 1.3.0"]
                          ],
