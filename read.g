@@ -17,3 +17,5 @@ ReadPackage( "GraphBacktracking", "gap/constraints/conjugacy.g");
 ReadPackage( "GraphBacktracking", "gap/constraints/digraphs.g");
 ReadPackage( "GraphBacktracking", "gap/refiners.gi");
 
+Perform(["GB_Con", "_GB"],
+        SetNamesForFunctionsInRecord);
