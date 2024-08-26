@@ -12,6 +12,7 @@ PackageName := "GraphBacktracking",
 Subtitle := "A simple but slow implementation of graph backtracking",
 Version := "0.5.2",
 Date := "21/12/2021", # dd/mm/yyyy format
+License := "MPL-2.0",
 
 Persons := [
   rec(
