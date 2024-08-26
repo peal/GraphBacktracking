@@ -8,7 +8,10 @@
 # Private methods of package
 _GB := AtomicRecord(rec());
 
-ReadPackage( "GraphBacktracking", "gap/GraphBacktracking.gi");
+if not IsBound(_BT_SKIP_INTERFACE) then
+    ReadPackage( "GraphBacktracking", "gap/GraphBacktracking.gi");
+fi;
+
 ReadPackage( "GraphBacktracking", "gap/Equitable.gi");
 ReadPackage( "GraphBacktracking", "gap/constraints/simpleconstraints.g");
 ReadPackage( "GraphBacktracking", "gap/constraints/normaliser.g");

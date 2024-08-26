@@ -4,5 +4,8 @@
 # Reading the declaration part of the package.
 #
 
-ReadPackage( "GraphBacktracking", "gap/GraphBacktracking.gd");
+if not IsBound(_BT_SKIP_INTERFACE) then
+    ReadPackage( "GraphBacktracking", "gap/GraphBacktracking.gd");
+fi;
+
 ReadPackage( "GraphBacktracking", "gap/Equitable.gd");
