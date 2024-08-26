@@ -9,9 +9,10 @@
 _GB := AtomicRecord(rec());
 
 if not IsBound(_BT_SKIP_INTERFACE) then
-    ReadPackage( "GraphBacktracking", "gap/GraphBacktracking.gi");
+    ReadPackage( "GraphBacktracking", "gap/interface.gi");
 fi;
 
+ReadPackage( "GraphBacktracking", "gap/GraphBacktracking.gi");
 ReadPackage( "GraphBacktracking", "gap/Equitable.gi");
 ReadPackage( "GraphBacktracking", "gap/constraints/simpleconstraints.g");
 ReadPackage( "GraphBacktracking", "gap/constraints/normaliser.g");
