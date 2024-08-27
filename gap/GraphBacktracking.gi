@@ -128,3 +128,5 @@ _GB.BuildProblem :=
     {ps, conlist, conf} -> Objectify(GBStateType, rec(ps := ps, conlist := conlist, graphs := [], raw_graphs := [],
                             config := _BTKit.FillConfig(conf, _GB.DefaultConfig)));
 
+# For read.g
+_BTKit.FilesReadGB := true;

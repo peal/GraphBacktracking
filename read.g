@@ -9,12 +9,12 @@ if not IsBound(_BTKit.FilesReadGB) then
 fi;
 
 if not IsBound(_BT_SKIP_INTERFACE) and not IsBound(_BTKit.ReadInterfaceGB) then
-    _BTKit.ReadInterfaceGB := true;
+    # _BTKit.ReadInterfaceGB := true; in gap/interface.gi
     ReadPackage( "GraphBacktracking", "gap/interface.gi");
 fi;
 
 if not IsBound(_BTKit.FilesReadGB) then
-    _BTKit.FilesReadGB := true;
+    # _BTKit.FilesReadGB := true; in gap/GraphBacktracking.gi
     ReadPackage( "GraphBacktracking", "gap/GraphBacktracking.gi");
     ReadPackage( "GraphBacktracking", "gap/Equitable.gi");
     ReadPackage( "GraphBacktracking", "gap/constraints/simpleconstraints.g");

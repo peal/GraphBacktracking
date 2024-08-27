@@ -64,3 +64,6 @@ InstallGlobalFunction( GB_CheckInitialCoset,
         autgraph2 := [OnDigraphs(sols2.graph[1], sols2.canonicalperm), List(sols2.graph[2], x -> OnSets(x, sols2.canonicalperm))];
         return rec(graph1 := autgraph1, graph2 := autgraph2, equal := autgraph1 = autgraph2);
 end);
+
+# For read.g
+_BTKit.ReadInterfaceGB := true;
