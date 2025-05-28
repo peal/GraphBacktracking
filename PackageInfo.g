@@ -10,8 +10,8 @@ SetPackageInfo( rec(
 
 PackageName := "GraphBacktracking",
 Subtitle := "A simple but slow implementation of graph backtracking",
-Version := "0.5.2",
-Date := "21/12/2021", # dd/mm/yyyy format
+Version := "1.0.0",
+Date := "28/05/2025", # dd/mm/yyyy format
 License := "MPL-2.0",
 
 Persons := [
@@ -77,7 +77,7 @@ PackageDoc := rec(
 Dependencies := rec(
   GAP := ">= 4.13",
   NeededOtherPackages := [
-                           ["BacktrackKit", ">=0.6.1"],
+                           ["BacktrackKit", ">=1.0.0"],
                            ["digraphs", ">=1.1.1"],
                            ["images", ">= 1.3.0"]
                          ],
