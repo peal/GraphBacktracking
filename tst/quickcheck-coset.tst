@@ -1,5 +1,5 @@
 gap> LoadPackage("quickcheck", false);;
-gap> LoadPackage("graphbacktrack", false);;
+gap> LoadPackage("graphbacktracking", false);;
 gap> conf := QC_GetConfig();;
 gap> QC_SetConfig(rec(limit := 6));;
 gap> lmp := {l...} -> Maximum(1,Maximum(List(l, LargestMovedPoint)));;

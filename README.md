@@ -11,15 +11,6 @@ This algorithm can be used to perform calculations in permutation groups, such a
 
 This package is intended for learning and exploring the graph backtracking algorithm. The performance is **extremely poor**. For a modern, high-performance version of this algorithm, please see the [**vole**](https://github.com/peal/vole) package.
 
-`GraphBacktracking` requires GAP version >= 4.13.0, and recent versions of the following packages (see the `PackageInfo.g` file for specific versions):
-* BacktrackKit
-* datastructures
-* digraphs
-* images
-* primgrp
-
-Additionally, [the QuickCheck package](https://github.com/ChrisJefferson/QuickCheck) is required to run all of the tests.
-
 ## Contact
 
 This package is a work in progress, both in terms of code and documentation.
