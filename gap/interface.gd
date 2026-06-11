@@ -128,6 +128,12 @@ DeclareGlobalFunction( "GB_CheckInitialCoset" );
 #! <Item>refines for the permutations <C>p</C> with
 #! <C><A>a</A> ^ p = <A>b</A></C>, i.e. that conjugate the permutation
 #! <A>a</A> to <A>b</A>.</Item>
+#! <Mark><C>GB_Con.TransformationConjugacy(<A>a</A>, <A>b</A>)</C></Mark>
+#! <Item>likewise for transformations <A>a</A>, <A>b</A>: refines for the
+#! permutations <C>p</C> with <C><A>a</A> ^ p = <A>b</A></C> (conjugation),
+#! via the functional digraph of each transformation.</Item>
+#! <Mark><C>GB_Con.PartialPermConjugacy(<A>a</A>, <A>b</A>)</C></Mark>
+#! <Item>likewise for partial permutations <A>a</A>, <A>b</A>.</Item>
 #! <Mark><C>GB_Con.SetDigraphs(<A>setL</A>, <A>setR</A>)</C></Mark>
 #! <Item>refines for the permutations mapping the set of digraphs
 #! <A>setL</A> to the set of digraphs <A>setR</A> (under
