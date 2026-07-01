@@ -1,27 +1,45 @@
   
-  [1X1 [33X[0;0YEquitable Graphs[133X[101X
+  [1X1 [33X[0;0YIntroduction[133X[101X
   
   
-  [1X1.1 [33X[0;0YExample Methods[133X[101X
+  [1X1.1 [33X[0;0YWhat is [5XGraphBacktracking[105X[101X[1X?[133X[101X
   
-  [33X[0;0YThis  section  will describe the methods which can be used to make equitable
-  partitions[133X
+  [33X[0;0Y[5XGraphBacktracking[105X  implements  the graph backtracking algorithm described in
+  the  paper  [21XComputing  canonical  images  in  permutation  groups with Graph
+  Backtracking[121X, by Christopher Jefferson, Rebecca Waldecker and Wilf A. Wilson
+  ([7Xhttps://arxiv.org/abs/2209.02534[107X).  Graph  backtracking  generalises Leon's
+  partition  backtrack:  instead  of refining only an ordered partition of the
+  points,  the  search  also  accumulates a stack of vertex- and edge-labelled
+  graphs,  which  can  capture constraints that a partition alone cannot. This
+  makes  it  possible to solve problems such as normaliser computation and the
+  canonical image of a graph under an arbitrary group.[133X
   
-  [1X1.1-1 GB_MakeEquitableNone[101X
+  [33X[0;0YThis  package  builds  directly  on the [5XBacktrackKit[105X package, and reuses its
+  framework   essentially   unchanged:   ordered  partition  stacks,  tracers,
+  constraints,  the  refiner  protocol,  and  the top-level search loop. Those
+  concepts  are  documented  in  the  [5XBacktrackKit[105X manual and are not repeated
+  here.  This  manual  assumes  you are familiar with them, in particular with
+  [14X'BacktrackKit: The concept of constraints'[114X and [14X'BacktrackKit: Refiners'[114X, and
+  documents only what [5XGraphBacktracking[105X adds on top.[133X
   
-  [33X[1;0Y[29X[2XGB_MakeEquitableNone[102X( [3Xarg1[103X, [3Xarg2[103X, [3Xarg3[103X ) [32X operation[133X
   
-  [33X[0;0YGiven a partition stack, and a list of graphs, make the partition equitable.[133X
+  [1X1.2 [33X[0;0YRelationship to BacktrackKit and Vole[133X[101X
   
-  [1X1.1-2 GB_MakeEquitableWeak[101X
+  [33X[0;0YLike  [5XBacktrackKit[105X,  this  package  exists  for  [13Xlearning  and exploring[113X the
+  algorithms.  Its  performance  is [13Xextremely poor[113X — often orders of magnitude
+  slower  than  the  built-in  [5XGAP[105X  functions for the same task. For a modern,
+  high-performance  implementation of graph backtracking, use the [5Xvole[105X package
+  ([7Xhttps://github.com/peal/vole[107X) instead.[133X
   
-  [33X[1;0Y[29X[2XGB_MakeEquitableWeak[102X( [3Xarg1[103X, [3Xarg2[103X, [3Xarg3[103X ) [32X operation[133X
+  [33X[0;0YThe one substantive extension to the [5XBacktrackKit[105X refiner protocol is that a
+  [5XGraphBacktracking[105X  refiner  may,  in  addition  to  splitting  cells  of the
+  partition,  emit  [13Xgraphs[113X.  A  value returned by a refiner's [10Xrefine[110X functions
+  (see [14X'BacktrackKit: The record refine'[114X) may be a record with the components:[133X
   
-  [1X1.1-3 GB_MakeEquitableStrong[101X
+  [30X    [33X[0;6Y[10Xgraph[110X — a [5XDigraphs[105X digraph that is added to the graph stack; and/or[133X
   
-  [33X[1;0Y[29X[2XGB_MakeEquitableStrong[102X( [3Xarg1[103X, [3Xarg2[103X, [3Xarg3[103X ) [32X operation[133X
+  [30X    [33X[0;6Y[10Xvertlabels[110X — a list giving an initial colour for each vertex.[133X
   
-  [1X1.1-4 GB_MakeEquitableFull[101X
-  
-  [33X[1;0Y[29X[2XGB_MakeEquitableFull[102X( [3Xarg1[103X, [3Xarg2[103X, [3Xarg3[103X ) [32X operation[133X
+  [33X[0;0YThe  graph  stack  is  then  made  equitable  (see [14X4[114X) and contributes to the
+  branching and pruning of the search in the same way the partition does.[133X
   

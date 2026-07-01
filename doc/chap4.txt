@@ -1,0 +1,54 @@
+  
+  [1X4 [33X[0;0YEquitable Graphs[133X[101X
+  
+  
+  [1X4.1 [33X[0;0YMaking a partition equitable[133X[101X
+  
+  [33X[0;0YDuring  search,  the  partition  must be refined with respect to the current
+  graph stack until it is [13Xequitable[113X: informally, until no cell can be split by
+  looking   at  how  its  points  connect  to  the  cells  of  the  partition.
+  [5XGraphBacktracking[105X  offers  several methods of differing strength and cost. A
+  stronger  method  splits  the  partition  at  least as much as a weaker one,
+  prunes  the  search tree more, but costs more per node. Which one is used is
+  controlled  by  the [10Xconsolidator[110X field of the configuration record passed to
+  the search functions (see [14X2[114X); the default is [2XGB_MakeEquitableStrong[102X ([14X4.1-3[114X).[133X
+  
+  [33X[0;0YEach  method takes a partition stack [3Xps[103X, a tracer [3Xtracer[103X (see [14X'BacktrackKit:
+  Ordered  tracers'[114X),  and  a list [3Xgraphs[103X of digraphs. It refines [3Xps[103X in place,
+  recording  the  splits  in [3Xtracer[103X, and returns [9Xtrue[109X on success or [9Xfalse[109X if a
+  split contradicted the tracer (a dead branch).[133X
+  
+  [1X4.1-1 GB_MakeEquitableNone[101X
+  
+  [33X[1;0Y[29X[2XGB_MakeEquitableNone[102X( [3Xps[103X, [3Xtracer[103X, [3Xgraphs[103X ) [32X operation[133X
+  
+  [33X[0;0YDoes  nothing and returns [9Xtrue[109X: the partition is left unchanged. Provided as
+  a  baseline  (it  makes graph backtracking behave like ordinary backtracking
+  with respect to the graphs).[133X
+  
+  [1X4.1-2 GB_MakeEquitableWeak[101X
+  
+  [33X[1;0Y[29X[2XGB_MakeEquitableWeak[102X( [3Xps[103X, [3Xtracer[103X, [3Xgraphs[103X ) [32X operation[133X
+  
+  [33X[0;0YRefines  [3Xps[103X  by  repeatedly splitting each cell according to the multiset of
+  cells  reached  along  out- and in-edges of each graph, iterating to a fixed
+  point.  This is the classical equitable-partition refinement applied to each
+  graph in turn.[133X
+  
+  [1X4.1-3 GB_MakeEquitableStrong[101X
+  
+  [33X[1;0Y[29X[2XGB_MakeEquitableStrong[102X( [3Xps[103X, [3Xtracer[103X, [3Xgraphs[103X ) [32X operation[133X
+  
+  [33X[0;0YA  stronger  refinement  than [2XGB_MakeEquitableWeak[102X ([14X4.1-2[114X): it distinguishes
+  points using the combined edge information across all graphs simultaneously,
+  rather than one graph at a time. This is the default consolidator.[133X
+  
+  [1X4.1-4 GB_MakeEquitableFull[101X
+  
+  [33X[1;0Y[29X[2XGB_MakeEquitableFull[102X( [3Xps[103X, [3Xtracer[103X, [3Xgraphs[103X ) [32X operation[133X
+  
+  [33X[0;0YThe  strongest  (and  most expensive) refinement: it builds a single digraph
+  encoding  the whole graph stack, computes its automorphism group and orbits,
+  and  splits  the  partition  by  those  orbits.  This can prune branches the
+  cheaper methods miss, at a substantial cost per node.[133X
+  

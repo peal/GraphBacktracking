@@ -5,7 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-<title>GAP (GraphBacktracking) - Chapter 1: Equitable Graphs</title>
+<title>GAP (GraphBacktracking) - Chapter 1: Introduction</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="generator" content="GAPDoc2HTML" />
 <link rel="stylesheet" type="text/css" href="manual.css" />
@@ -15,60 +15,57 @@
 <body class="chap1"  onload="jscontent()">
 
 
-<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chapInd.html">Ind</a>  </div>
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chapInd.html">Ind</a>  </div>
 
-<div class="chlinkprevnexttop">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap0.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapInd.html">[Next Chapter]</a>&nbsp;  </div>
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap0.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap2.html">[Next Chapter]</a>&nbsp;  </div>
 
 <p id="mathjaxlink" class="pcenter"><a href="chap1_mj.html">[MathJax on]</a></p>
-<p><a id="X7D667EF77876C1CC" name="X7D667EF77876C1CC"></a></p>
-<div class="ChapSects"><a href="chap1.html#X7D667EF77876C1CC">1 <span class="Heading">Equitable Graphs</span></a>
-<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1.html#X7ED1D62579C10890">1.1 <span class="Heading">Example Methods</span></a>
+<p><a id="X7DFB63A97E67C0A1" name="X7DFB63A97E67C0A1"></a></p>
+<div class="ChapSects"><a href="chap1.html#X7DFB63A97E67C0A1">1 <span class="Heading">Introduction</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1.html#X85D32B42842201BA">1.1 <span class="Heading">What is <strong class="pkg">GraphBacktracking</strong>?</span></a>
 </span>
-<div class="ContSSBlock">
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1.html#X82D5612A82AE8299">1.1-1 GB_MakeEquitableNone</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1.html#X84AE71CE814ED2C1">1.1-2 GB_MakeEquitableWeak</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1.html#X80BAC6E3811A28AE">1.1-3 GB_MakeEquitableStrong</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1.html#X7ACB93E487CD6149">1.1-4 GB_MakeEquitableFull</a></span>
-</div></div>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1.html#X847807D27B94DAA2">1.2 <span class="Heading">Relationship to BacktrackKit and Vole</span></a>
+</span>
+</div>
 </div>
 
-<h3>1 <span class="Heading">Equitable Graphs</span></h3>
+<h3>1 <span class="Heading">Introduction</span></h3>
 
-<p><a id="X7ED1D62579C10890" name="X7ED1D62579C10890"></a></p>
+<p><a id="X85D32B42842201BA" name="X85D32B42842201BA"></a></p>
 
-<h4>1.1 <span class="Heading">Example Methods</span></h4>
+<h4>1.1 <span class="Heading">What is <strong class="pkg">GraphBacktracking</strong>?</span></h4>
 
-<p>This section will describe the methods which can be used to make equitable partitions</p>
+<p><strong class="pkg">GraphBacktracking</strong> implements the graph backtracking algorithm described in the paper <q>Computing canonical images in permutation groups with Graph Backtracking</q>, by Christopher Jefferson, Rebecca Waldecker and Wilf A. Wilson (<span class="URL"><a href="https://arxiv.org/abs/2209.02534">https://arxiv.org/abs/2209.02534</a></span>). Graph backtracking generalises Leon's partition backtrack: instead of refining only an ordered partition of the points, the search also accumulates a stack of vertex- and edge-labelled graphs, which can capture constraints that a partition alone cannot. This makes it possible to solve problems such as normaliser computation and the canonical image of a graph under an arbitrary group.</p>
 
-<p><a id="X82D5612A82AE8299" name="X82D5612A82AE8299"></a></p>
+<p>This package builds directly on the <strong class="pkg">BacktrackKit</strong> package, and reuses its framework essentially unchanged: ordered partition stacks, tracers, constraints, the refiner protocol, and the top-level search loop. Those concepts are documented in the <strong class="pkg">BacktrackKit</strong> manual and are not repeated here. This manual assumes you are familiar with them, in particular with <a href="https://peal.github.io/BacktrackKit/doc/chap4.html#X7E70E2CC7E86816E"><span class="RefLink">BacktrackKit: The concept of constraints</span></a> and <a href="https://peal.github.io/BacktrackKit/doc/chap5.html#X786EF6928319D57A"><span class="RefLink">BacktrackKit: Refiners</span></a>, and documents only what <strong class="pkg">GraphBacktracking</strong> adds on top.</p>
 
-<h5>1.1-1 GB_MakeEquitableNone</h5>
+<p><a id="X847807D27B94DAA2" name="X847807D27B94DAA2"></a></p>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GB_MakeEquitableNone</code>( <var class="Arg">arg1</var>, <var class="Arg">arg2</var>, <var class="Arg">arg3</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
-<p>Given a partition stack, and a list of graphs, make the partition equitable.</p>
+<h4>1.2 <span class="Heading">Relationship to BacktrackKit and Vole</span></h4>
 
-<p><a id="X84AE71CE814ED2C1" name="X84AE71CE814ED2C1"></a></p>
+<p>Like <strong class="pkg">BacktrackKit</strong>, this package exists for <em>learning and exploring</em> the algorithms. Its performance is <em>extremely poor</em> — often orders of magnitude slower than the built-in <strong class="pkg">GAP</strong> functions for the same task. For a modern, high-performance implementation of graph backtracking, use the <strong class="pkg">vole</strong> package (<span class="URL"><a href="https://github.com/peal/vole">https://github.com/peal/vole</a></span>) instead.</p>
 
-<h5>1.1-2 GB_MakeEquitableWeak</h5>
-
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GB_MakeEquitableWeak</code>( <var class="Arg">arg1</var>, <var class="Arg">arg2</var>, <var class="Arg">arg3</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
-<p><a id="X80BAC6E3811A28AE" name="X80BAC6E3811A28AE"></a></p>
-
-<h5>1.1-3 GB_MakeEquitableStrong</h5>
-
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GB_MakeEquitableStrong</code>( <var class="Arg">arg1</var>, <var class="Arg">arg2</var>, <var class="Arg">arg3</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
-<p><a id="X7ACB93E487CD6149" name="X7ACB93E487CD6149"></a></p>
-
-<h5>1.1-4 GB_MakeEquitableFull</h5>
-
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GB_MakeEquitableFull</code>( <var class="Arg">arg1</var>, <var class="Arg">arg2</var>, <var class="Arg">arg3</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
-
-<div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap0.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapInd.html">[Next Chapter]</a>&nbsp;  </div>
+<p>The one substantive extension to the <strong class="pkg">BacktrackKit</strong> refiner protocol is that a <strong class="pkg">GraphBacktracking</strong> refiner may, in addition to splitting cells of the partition, emit <em>graphs</em>. A value returned by a refiner's <code class="code">refine</code> functions (see <a href="https://peal.github.io/BacktrackKit/doc/chap5.html#X87747BA382104C75"><span class="RefLink">BacktrackKit: The record refine</span></a>) may be a record with the components:</p>
 
 
-<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chapInd.html">Ind</a>  </div>
+<ul>
+<li><p><code class="code">graph</code> — a <strong class="pkg">Digraphs</strong> digraph that is added to the graph stack; and/or</p>
+
+</li>
+<li><p><code class="code">vertlabels</code> — a list giving an initial colour for each vertex.</p>
+
+</li>
+</ul>
+<p>The graph stack is then made equitable (see <a href="chap4.html#X7D667EF77876C1CC"><span class="RefLink">4</span></a>) and contributes to the branching and pruning of the search in the same way the partition does.</p>
+
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap0.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap2.html">[Next Chapter]</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chapInd.html">Ind</a>  </div>
 
 <hr />
-<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+<p class="foot">generated by <a href="https://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
 </body>
 </html>
