@@ -31,7 +31,7 @@ gap> PS_AsPartition(ps);
 #
 gap> ps := PartitionStack(6);
 [ [ 1, 2, 3, 4, 5, 6 ] ]
-gap> g := _BTKit.getOrbitalList(DihedralGroup(IsPermGroup, 12), 12);;
+gap> g := _BTKit.getOrbitalListWithOptions(DihedralGroup(IsPermGroup, 12), rec(maxval := 12, skipOneLarge := true, budgetMode := false));;
 gap> GB_MakeEquitableWeak(ps, r, g);
 true
 gap> PS_AsPartition(ps);
@@ -51,7 +51,7 @@ gap> PS_AsPartition(ps);
 #
 gap> ps := PartitionStack(6);
 [ [ 1, 2, 3, 4, 5, 6 ] ]
-gap> g := Concatenation(_BTKit.getOrbitalList(Group((1,2,3,4,5,6)),6), _BTKit.getOrbitalList(Group((1,2,4,3,5,6)),6));;
+gap> g := Concatenation(_BTKit.getOrbitalListWithOptions(Group((1,2,3,4,5,6)), rec(maxval := 6, skipOneLarge := true, budgetMode := false)), _BTKit.getOrbitalListWithOptions(Group((1,2,4,3,5,6)), rec(maxval := 6, skipOneLarge := true, budgetMode := false)));;
 gap> GB_MakeEquitableWeak(ps, r, g);
 true
 gap> PS_AsPartition(ps);
