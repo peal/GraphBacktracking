@@ -16,3 +16,16 @@ This package is intended for learning and exploring the graph backtracking algor
 This package is a work in progress, both in terms of code and documentation.
 
 If you have any issues or questions about this package, please post an issue at https://github.com/peal/GraphBacktracking/issues
+
+## CI and releases
+
+CI tests the development, latest, and oldest supported GAP versions on Linux,
+plus development GAP on Windows, with both normal and `OnlyNeeded` loading.
+The Docs workflow builds the manual and uploads its PDF.
+
+To release, update the version and date in `PackageInfo.g`, push to `master`,
+then run **Actions → Release** on `master` with **dry-run** selected first.
+Inspect the generated archives and manuals, then rerun without dry-run to
+publish the GitHub release and update the package website. Existing website
+customisations are preserved. Use **force** only when intentionally replacing
+an existing release or bypassing the release-date check.
